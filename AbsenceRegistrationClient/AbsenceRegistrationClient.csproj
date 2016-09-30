@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A5FABCE2-5D01-48A3-9EDB-5B52E2D263AB}</ProjectGuid>
+    <ProjectGuid>{8F73E2C3-5F8B-4AB5-848D-2A9CE3A69FBB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AbsenceRegistrationClient</RootNamespace>
