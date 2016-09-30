@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbsenceRegistrationClient",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbsenceRegistrationService", "AbsenceRegistrationService\AbsenceRegistrationService.csproj", "{5A8AA472-F0D0-408A-8130-0D3B8F507F08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageDb", "ManageDb\ManageDb.csproj", "{596250A1-7261-46A7-9C5A-2CBBC34F7AE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5A8AA472-F0D0-408A-8130-0D3B8F507F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A8AA472-F0D0-408A-8130-0D3B8F507F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A8AA472-F0D0-408A-8130-0D3B8F507F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{596250A1-7261-46A7-9C5A-2CBBC34F7AE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{596250A1-7261-46A7-9C5A-2CBBC34F7AE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{596250A1-7261-46A7-9C5A-2CBBC34F7AE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{596250A1-7261-46A7-9C5A-2CBBC34F7AE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
