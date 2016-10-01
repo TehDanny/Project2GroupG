@@ -15,13 +15,13 @@ namespace AbsenceRegistrationService
         {
             base.Connect();
             sqlCommandString="INSERT INTO  Project2GroupGUserTable VALUES('"+obj.GetEmail()+"','" + obj.GetEncryptedPassword()+ "', '"+obj.GetName()+"','"+obj.GetSurname()+"', '"+obj.GetUserType()+"');";
-            cmd = new SqlCommand(sqlCommandString, base.dbconn);
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             cmd.ExecuteNonQuery();
 
             int lastindex = MsSqlOperations.LastIndexAutenticationTable();
 
             sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable (timeindex,email) VALUES('" + (lastindex+1) + "','"+obj.GetEmail()+"');";
-            cmd = new SqlCommand(sqlCommandString, dbconn);
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             cmd.ExecuteNonQuery();
 
             base.Disconnect();
@@ -31,7 +31,7 @@ namespace AbsenceRegistrationService
         {
             base.Connect();
             sqlCommandString = "DELETE FROM  Project2GroupGUserTable WHERE email='"+key+"';";
-            cmd = new SqlCommand(sqlCommandString, base.dbconn);
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             cmd.ExecuteNonQuery();
             base.Disconnect();
         }
@@ -39,7 +39,7 @@ namespace AbsenceRegistrationService
         {
             base.Connect();
             sqlCommandString = "select email,encryptedpassword,name,surname,type from Project2GroupGUserTable where email='" + key + "'";
-            cmd = new SqlCommand(sqlCommandString, base.dbconn);
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
             User u = null;
             if (reader.Read())
@@ -60,7 +60,7 @@ namespace AbsenceRegistrationService
             string type = obj.GetUserType();
             base.Connect();
             sqlCommandString = "UPDATE Project2GroupGUserTable SET email='" + email + "',encryptedpassword='" + encryptedPassword + "',name='" + name + "',surname='" + surname + "',type='" + type + "' WHERE email='" + email + "';";
-            cmd = new SqlCommand(sqlCommandString, base.dbconn);
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             cmd.ExecuteNonQuery();
             base.Disconnect();
         }

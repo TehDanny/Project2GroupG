@@ -13,7 +13,6 @@ namespace ManageDb
         private static string sqlCommandString="";
         private static SqlCommand cmd;
         private static SqlDataReader reader;
-        private static SqlParameter parameter;
         private static void ConnectDB()
         {
             

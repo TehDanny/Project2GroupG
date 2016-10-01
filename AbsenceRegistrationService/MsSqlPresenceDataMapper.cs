@@ -29,11 +29,11 @@ namespace AbsenceRegistrationService
             int lastindex=MsSqlOperations.LastIndexAutenticationTable();
 
             sqlCommandString = "INSERT INTO  Project2GroupGAutenticationTable (dateaut,timeaut, mac,ip) VALUES('" + obj.GetDate().ToString("yyyy-MM-dd HH:mm:ss.fff") + "','" + obj.GetDate().TimeOfDay + "', " + "'" + obj.GetMac() + "','"+obj.GetIp()+"');";
-            cmd = new SqlCommand(sqlCommandString, base.dbconn);
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             cmd.ExecuteNonQuery();
 
             sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable (timeindex,email) VALUES('" + (lastindex + 1) + "','" + obj.GetEmail() + "');";
-            cmd = new SqlCommand(sqlCommandString, base.dbconn);
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             cmd.ExecuteNonQuery();
 
             base.Disconnect();
@@ -44,7 +44,7 @@ namespace AbsenceRegistrationService
             int index=MsSqlOperations.GetTimeIndexFromEmail(key);
             base.Connect();
             sqlCommandString = "select dateaut,timeaut,mac,ip from Project2GroupGAutenticationTable where timeindex='" + index + "'";
-            cmd = new SqlCommand(sqlCommandString, mc.GetSqlConnection());
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
             DateTime dt = new DateTime();
             TimeSpan ts = new TimeSpan();
