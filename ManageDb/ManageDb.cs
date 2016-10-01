@@ -146,6 +146,10 @@ namespace ManageDb
                 cmd = new SqlCommand(sqlCommandString, dbconn);
                 cmd.ExecuteNonQuery();
 
+                sqlCommandString = "DELETE FROM  Project2GroupGAutenticationTable where timeindex='"+0+"';";
+                cmd = new SqlCommand(sqlCommandString, dbconn);
+                cmd.ExecuteNonQuery();
+
                 CloseDB();
 
                 ConnectDB();
