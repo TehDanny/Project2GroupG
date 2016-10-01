@@ -49,7 +49,7 @@ namespace ManageDb
         private static void CreateTableAutentication(string table_name)
         {
             ConnectDB();
-            sqlCommandString = "CREATE TABLE " + table_name + "(timeindex int IDENTITY(0,1)" +/*IDENTITY(0,1) means auto incremental value, starting by 0, incrementing by 1 each time*/" NOT NULL,dateaut date NOT NULL, timeaut time NOT NULL, mac varchar(17),PRIMARY KEY (timeindex));";
+            sqlCommandString = "CREATE TABLE " + table_name + "(timeindex int IDENTITY(0,1)" +/*IDENTITY(0,1) means auto incremental value, starting by 0, incrementing by 1 each time*/" NOT NULL,dateaut date NOT NULL, timeaut time NOT NULL, mac varchar(17),ip varchar(15)PRIMARY KEY (timeindex));";
             cmd = new SqlCommand(sqlCommandString, dbconn);
             cmd.ExecuteNonQuery();
             CloseDB();
@@ -127,14 +127,14 @@ namespace ManageDb
                 DateTime myDateTime = DateTime.Now;
                 string sqlFormattedTime = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 TimeSpan t = myDateTime.TimeOfDay;
-                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationTable (dateaut,timeaut, mac) VALUES('"+ sqlFormattedTime+"','"+t+"','12345678901234567');";
+                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationTable (dateaut,timeaut, mac,ip) VALUES('"+ sqlFormattedTime+"','"+t+"','12345678901234567','192.168.0.1');";
                 cmd = new SqlCommand(sqlCommandString, dbconn);
                 cmd.ExecuteNonQuery();
 
                 DateTime myDateTime2 = DateTime.Now;
                 string sqlFormattedTime2 = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t = myDateTime2.TimeOfDay;
-                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationTable VALUES('" + sqlFormattedTime2 + "','" +t+"', "+"'"+ null +"');";
+                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationTable (dateaut,timeaut, mac,ip) VALUES('" + sqlFormattedTime2 + "','" +t+"', "+"'"+ null +"','192.168.0.2');";
                 cmd = new SqlCommand(sqlCommandString, dbconn);
                 cmd.ExecuteNonQuery();
 
@@ -149,20 +149,23 @@ namespace ManageDb
                 CloseDB();
 
                 ConnectDB();
-                sqlCommandString = "select dateaut, timeaut from Project2GroupGAutenticationTable";
+                sqlCommandString = "select timeindex,dateaut, timeaut from Project2GroupGAutenticationTable";
                 cmd = new SqlCommand(sqlCommandString, dbconn);
                 reader = cmd.ExecuteReader();
                 DateTime newD;
                 TimeSpan newT;
-                int ordinal = 0; 
+                int ordinal = 0;
+                int index = 0;
                 while (reader.Read())
                 {
                     ordinal= reader.GetOrdinal("dateaut");
                     newD = reader.GetDateTime(ordinal);
                     ordinal = reader.GetOrdinal("timeaut");
                     newT = reader.GetTimeSpan(ordinal);
+                    index = (int)reader["timeindex"];
                     Console.WriteLine(newD.ToShortDateString());
                     Console.WriteLine(newT);
+                    Console.WriteLine(index);
                 }
                 CloseDB();
             }
