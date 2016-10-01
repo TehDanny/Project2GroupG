@@ -132,17 +132,17 @@ namespace ManageDb
                 cmd.ExecuteNonQuery();
 
                 DateTime myDateTime2 = DateTime.Now;
-                string sqlFormattedTime2 = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                string sqlFormattedTime2 = myDateTime2.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 t = myDateTime2.TimeOfDay;
                 sqlCommandString = "INSERT INTO  Project2GroupGAutenticationTable (dateaut,timeaut, mac,ip) VALUES('" + sqlFormattedTime2 + "','" +t+"', "+"'"+ null +"','192.168.0.2');";
                 cmd = new SqlCommand(sqlCommandString, dbconn);
                 cmd.ExecuteNonQuery();
 
-                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable VALUES('"+0+"','marc535f@edu.eal.dk');";
+                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable (timeindex,email) VALUES('" +1 + "','marc535f@edu.eal.dk');";
                 cmd = new SqlCommand(sqlCommandString, dbconn);
                 cmd.ExecuteNonQuery();
 
-                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable VALUES('" + 1 + "','marc643f@edu.eal.dk');";
+                sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable (timeindex,email) VALUES('"+0+"','marc643f@edu.eal.dk');";
                 cmd = new SqlCommand(sqlCommandString, dbconn);
                 cmd.ExecuteNonQuery();
 
@@ -172,6 +172,19 @@ namespace ManageDb
                     Console.WriteLine(index);
                 }
                 CloseDB();
+
+                ConnectDB();
+                sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable";
+                cmd = new SqlCommand(sqlCommandString, dbconn);
+                reader = cmd.ExecuteReader();
+                
+                while (reader.Read())
+                {
+                    index = (int)reader["timeindex"];
+                    Console.WriteLine(index);
+                }
+                CloseDB();
+
             }
             catch (Exception e)
             {

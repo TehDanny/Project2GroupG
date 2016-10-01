@@ -14,5 +14,9 @@ namespace AbsenceRegistrationService
         {
             dbconn.Close();
         }
+        public SqlConnection GetSqlConnection()
+        {
+            return this.dbconn;
+        }
     }
 }
