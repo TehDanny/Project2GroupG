@@ -12,7 +12,7 @@ namespace AbsenceRegistrationService
         //The key here should be the email
         LinkedList<UserPresence> ReadUserHistory(string key);
 
-        LinkedList<LinkedList<UserPresence>> ReadAllUsersHistory();
+        LinkedList<UserPresence> ReadAllUsersHistory();
 
     }
 }

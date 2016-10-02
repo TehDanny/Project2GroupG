@@ -34,9 +34,30 @@ namespace AbsenceRegistrationService
             return userPresences;
         }
 
-        public LinkedList<LinkedList<UserPresence>> ReadAllUsersHistory()
+        public LinkedList<UserPresence> ReadAllUsersHistory()
         {
-            throw new NotImplementedException();
+            LinkedList<UserPresence> userPresences = new LinkedList<UserPresence>();
+            sqlCommandString = "select email,dateaut,timeaut,mac,ip from Project2GroupGAutenticationTable";
+            base.Connect();
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
+            reader = cmd.ExecuteReader();
+            DateTime dt = new DateTime();
+            TimeSpan ts = new TimeSpan();
+            string mac = "";
+            string ip = "";
+            string email = "";
+            while (reader.Read())
+            {
+                dt = (DateTime)reader["dateaut"];
+                ts = (TimeSpan)reader["timeaut"];
+                mac = (string)reader["mac"];
+                ip = (string)reader["ip"];
+                email = (string)reader["email"];
+                dt.Add(ts);
+                userPresences.AddLast(new UserPresence(dt, email, mac, ip));
+            }
+            base.Disconnect();
+            return userPresences;
         }
         public void Create(UserPresence obj)
         {
