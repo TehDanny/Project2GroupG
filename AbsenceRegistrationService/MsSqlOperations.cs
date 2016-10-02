@@ -24,14 +24,17 @@ namespace AbsenceRegistrationService
             return lastindex;
         }
 
-        public static int GetTimeIndexFromEmail(string email)
+        public static int GetLastTimeIndexFromEmail(string email)
         {
             mc.Connect();
             int index = 0;
-            sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable where email='"+email+"'";
+            sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable where email='"+email+"' ORDER BY timeindex desc";
             cmd = new SqlCommand(sqlCommandString, mc.GetSqlConnection());
             reader = cmd.ExecuteReader();
-            index = (int)reader["timeindex"];
+            if (reader.Read())
+            {
+                index = (int)reader["timeindex"];
+            }
             mc.Disconnect();
             return index;
         }

@@ -39,9 +39,9 @@ namespace AbsenceRegistrationService
             base.Disconnect();
         }
 
-        public UserPresence Read(string key)
+        public UserPresence Read(string key)//last autentication
         {
-            int index=MsSqlOperations.GetTimeIndexFromEmail(key);
+            int index=MsSqlOperations.GetLastTimeIndexFromEmail(key);
             base.Connect();
             sqlCommandString = "select dateaut,timeaut,mac,ip from Project2GroupGAutenticationTable where timeindex='" + index + "'";
             cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
@@ -63,14 +63,24 @@ namespace AbsenceRegistrationService
             return up;
         }
 
-        public void Update(UserPresence obj)
+        public void Update(UserPresence obj)//update the autentication time for that user
         {
-            throw new NotImplementedException();
+            int index = MsSqlOperations.GetLastTimeIndexFromEmail(obj.GetEmail());
+            base.Connect();
+            this.sqlCommandString = "UPDATE  Project2GroupGAutenticationTable SET dateaut='" + obj.GetDate().ToString("yyyy-MM-dd HH:mm:ss.fff") + "',timeaut='" + obj.GetDate().TimeOfDay + "', mac='" + obj.GetMac() + "',ip='" + obj.GetIp() + "' WHERE timeindex='"+index+"';";
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
+            cmd.ExecuteNonQuery();
+            base.Disconnect();
         }
 
         public void Delete(string key)
         {
-            throw new NotImplementedException();
+            int index = MsSqlOperations.GetLastTimeIndexFromEmail(key);
+            base.Connect();
+            this.sqlCommandString = "DELETE FROM  Project2GroupGAutenticationTable WHERE timeindex='" + index + "';";
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
+            cmd.ExecuteNonQuery();
+            base.Disconnect();
         }
     }
 }
