@@ -10,7 +10,28 @@ namespace AbsenceRegistrationService
     {
         public LinkedList<UserPresence> ReadUserHistory(string key)
         {
-            throw new NotImplementedException();
+            LinkedList<int> indexes = base.GetTimeIndexesFromEmail(key);
+            LinkedList<UserPresence> userPresences = new LinkedList<UserPresence>();
+            string indexesString = string.Join(",", indexes.ToArray());
+            sqlCommandString = "select dateaut,timeaut,mac,ip from Project2GroupGAutenticationTable where timeindex in+'" + indexesString + "'";
+            base.Connect();
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
+            reader = cmd.ExecuteReader();
+            DateTime dt = new DateTime();
+            TimeSpan ts = new TimeSpan();
+            string mac = "";
+            string ip = "";
+            while (reader.Read())
+            {
+                dt = (DateTime)reader["dateaut"];
+                ts = (TimeSpan)reader["timeaut"];
+                mac = (string)reader["mac"];
+                ip = (string)reader["ip"];
+                dt.Add(ts);
+                userPresences.AddLast(new UserPresence(dt, key, mac, ip));
+            }
+            base.Disconnect();
+            return userPresences;
         }
 
         public LinkedList<LinkedList<UserPresence>> ReadAllUsersHistory()

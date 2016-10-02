@@ -12,7 +12,7 @@ namespace AbsenceRegistrationService
         protected SqlCommand cmd;
         protected SqlDataReader reader;
 
-        protected T ReadTypeFromCommandStringOneField<T>(string commandString, string fieldName)
+        protected T ReadOneRowTypeFromCommandStringOneField<T>(string commandString, string fieldName)
         {
             T result = (T)(new object());
             base.Connect();
@@ -25,15 +25,35 @@ namespace AbsenceRegistrationService
             base.Disconnect();
             return default(T);
         }
+
+        protected LinkedList<int> GetTimeIndexesFromEmail(string key)
+        {
+            sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable where email='" + key + "'";
+            LinkedList<int> indexes = new LinkedList<int>();
+            base.Connect();
+            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                indexes.AddLast((int)reader["timeindex"]);
+            }
+            base.Disconnect();
+            return indexes;
+        }
+
+        protected T ReadTypeFromCommandStringeMultipleFields<T>(string commandString,params string[] fieldNames)
+        {
+            return default(T);
+        }
         protected int LastIndexAutenticationTable()
         {
             sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
-            return this.ReadTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
+            return this.ReadOneRowTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
         protected int GetLastTimeIndexFromEmail(string email)
         {
             sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable where email='"+email+"' ORDER BY timeindex desc";
-            return this.ReadTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
+            return this.ReadOneRowTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
         protected void DoVoidCommand(string commandString)
         {
