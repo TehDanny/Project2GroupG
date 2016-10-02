@@ -12,31 +12,29 @@ namespace AbsenceRegistrationService
         private static string sqlCommandString = "";
         private static SqlCommand cmd;
         private static SqlDataReader reader;
-        public static int LastIndexAutenticationTable()
-        {
-            mc.Connect();
-            int lastindex = 0;
-            sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
-            cmd = new SqlCommand(sqlCommandString, mc.GetSqlConnection());
-            reader = cmd.ExecuteReader();
-            lastindex = (int)reader["timeindex"];
-            mc.Disconnect();
-            return lastindex;
-        }
 
-        public static int GetLastTimeIndexFromEmail(string email)
+        private static int ReadFromCommandString(string commandString,string fieldName)
         {
+            int result = 0;
             mc.Connect();
-            int index = 0;
-            sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable where email='"+email+"' ORDER BY timeindex desc";
-            cmd = new SqlCommand(sqlCommandString, mc.GetSqlConnection());
+            cmd = new SqlCommand(commandString, mc.GetSqlConnection());
             reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                index = (int)reader["timeindex"];
+                result = (int)reader[fieldName];
             }
             mc.Disconnect();
-            return index;
+            return result;
+        }
+        public static int LastIndexAutenticationTable()
+        {
+            sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
+            return MsSqlOperations.ReadFromCommandString(sqlCommandString, "timeindex");
+        }
+        public static int GetLastTimeIndexFromEmail(string email)
+        {
+            sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable where email='"+email+"' ORDER BY timeindex desc";
+            return MsSqlOperations.ReadFromCommandString(sqlCommandString, "timeindex");
         }
     }
 }

@@ -17,13 +17,6 @@ namespace AbsenceRegistrationService
             sqlCommandString="INSERT INTO  Project2GroupGUserTable VALUES('"+obj.GetEmail()+"','" + obj.GetEncryptedPassword()+ "', '"+obj.GetName()+"','"+obj.GetSurname()+"', '"+obj.GetUserType()+"');";
             cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             cmd.ExecuteNonQuery();
-
-            int lastindex = MsSqlOperations.LastIndexAutenticationTable();
-
-            sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable (timeindex,email) VALUES('" + (lastindex+1) + "','"+obj.GetEmail()+"');";
-            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
-            cmd.ExecuteNonQuery();
-
             base.Disconnect();
         }
 
