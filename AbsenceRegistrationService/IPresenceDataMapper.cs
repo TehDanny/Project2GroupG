@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbsenceRegistrationService
 {
-    interface IPresenceDataMapper : IDataMapper<UserPresence>
+    interface IPresenceDataMapper : IDataMapper<UserPresence,string>
     {
 
         //The key here should be the email

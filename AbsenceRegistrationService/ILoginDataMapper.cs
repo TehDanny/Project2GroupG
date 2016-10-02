@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbsenceRegistrationService
 {
-    public interface ILoginDataMapper : IDataMapper<User>
+    public interface ILoginDataMapper : IDataMapper<User,string>
     {
 
     }

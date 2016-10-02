@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace AbsenceRegistrationService
 {
-    public interface IDataMapper <T>
+    public interface IDataMapper <ObjectType, KeyType>
     {
 
-        void Create(T obj);
-        T Read(string key);
-        void Update(T obj);
-        void Delete(string key);
+        void Create(ObjectType obj);
+        ObjectType Read(KeyType key);
+        void Update(ObjectType obj);
+        void Delete(KeyType key);
 
     }
 }
