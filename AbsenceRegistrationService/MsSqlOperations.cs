@@ -6,35 +6,41 @@ using System.Web;
 
 namespace AbsenceRegistrationService
 {
-    public static class MsSqlOperations
+    public class MsSqlOperations:MsSqlConnect
     {
-        private static MsSqlConnect mc = new MsSqlConnect();
-        private static string sqlCommandString = "";
-        private static SqlCommand cmd;
-        private static SqlDataReader reader;
+        protected  string sqlCommandString = "";
+        protected SqlCommand cmd;
+        protected SqlDataReader reader;
 
-        private static int ReadFromCommandString(string commandString,string fieldName)
+        protected T ReadTypeFromCommandStringOneField<T>(string commandString, string fieldName)
         {
-            int result = 0;
-            mc.Connect();
-            cmd = new SqlCommand(commandString, mc.GetSqlConnection());
+            T result = (T)(new object());
+            base.Connect();
+            cmd = new SqlCommand(commandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                result = (int)reader[fieldName];
+                result = (T)reader[fieldName];
             }
-            mc.Disconnect();
-            return result;
+            base.Disconnect();
+            return default(T);
         }
-        public static int LastIndexAutenticationTable()
+        protected int LastIndexAutenticationTable()
         {
             sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
-            return MsSqlOperations.ReadFromCommandString(sqlCommandString, "timeindex");
+            return this.ReadTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
-        public static int GetLastTimeIndexFromEmail(string email)
+        protected int GetLastTimeIndexFromEmail(string email)
         {
             sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable where email='"+email+"' ORDER BY timeindex desc";
-            return MsSqlOperations.ReadFromCommandString(sqlCommandString, "timeindex");
+            return this.ReadTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
+        }
+        protected void DoVoidCommand(string commandString)
+        {
+            base.Connect();
+            cmd = new SqlCommand(commandString, base.GetSqlConnection());
+            cmd.ExecuteNonQuery();
+            base.Disconnect();
         }
     }
 }
