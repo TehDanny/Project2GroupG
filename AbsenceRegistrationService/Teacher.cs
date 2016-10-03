@@ -7,9 +7,8 @@ namespace AbsenceRegistrationService
 {
     public class Teacher : User
     {
-        public override string GetUserType()
+        public Teacher(string email, string name, string surname, string encryptedPassword) : base(email, name, surname, encryptedPassword, "teacher")
         {
-            return null;
         }
     }
 }

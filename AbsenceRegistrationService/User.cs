@@ -8,23 +8,35 @@ namespace AbsenceRegistrationService
         private string email;
         private string name, surname;
         private string encryptedPassword;
+        private string type;
 
+        public User(string email, string name, string surname, string encryptedPassword, string type)
+        {
+            this.email = email;
+            this.name = name;
+            this.surname = surname;
+            this.encryptedPassword = encryptedPassword;
+            this.type = type;
+        }
         public string GetEmail()
         {
-            return null;
+            return this.email;
         }
         public string GetEncryptedPassword()
         {
-            return null;
+            return this.encryptedPassword;
         }
         public string GetName()
         {
-            return null;
+            return this.name;
         }
         public string GetSurname()
         {
-            return null;
+            return this.surname;
         }
-        public abstract string GetUserType();//called in this way because GetType already exists
+        public string GetUserType()//called in this way because GetType already exists
+        {
+            return this.type;
+        }
     }
 }

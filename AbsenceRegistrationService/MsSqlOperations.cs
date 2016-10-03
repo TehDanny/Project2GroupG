@@ -14,7 +14,9 @@ namespace AbsenceRegistrationService
 
         protected T ReadOneRowTypeFromCommandStringOneField<T>(string commandString, string fieldName)
         {
-            T result = (T)(new object());
+
+            T result;
+            result=default(T);
             base.Connect();
             cmd = new SqlCommand(commandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
