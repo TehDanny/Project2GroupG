@@ -17,15 +17,20 @@ namespace AbsenceRegistrationService
 
             T result;
             result=default(T);
+            result = (T)Activator.CreateInstance(typeof(T), new object[] { result });
             base.Connect();
             cmd = new SqlCommand(commandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                result = (T)reader[fieldName];
+                object o;
+                o= reader[fieldName];
+                result.GetType();
+                
+                result =(T)reader[fieldName];
             }
             base.Disconnect();
-            return default(T);
+            return result;
         }
         protected LinkedList<T> ReadSomeRowesTypeFromCommandStringeOneField<T>(string commandString, string fieldName)
         {

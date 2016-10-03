@@ -9,7 +9,7 @@ namespace ManageDb
 {
     public class ManageDbProgram
     {
-        private static SqlConnection dbconn= new SqlConnection("Data Source = ealdb1.eal.local;Initial Catalog=EAL5_DB;Persist Security Info=true;User ID=EAL5_USR;Password=Huff05e05");
+        private static SqlConnection dbconn= new SqlConnection("Data Source = 10.140.12.14"/*ealdb1.eal.local*/+";Initial Catalog=EAL5_DB;Persist Security Info=true;User ID=EAL5_USR;Password=Huff05e05");
         private static string sqlCommandString="";
         private static SqlCommand cmd;
         private static SqlDataReader reader;
@@ -75,54 +75,7 @@ namespace ManageDb
         public static void Main(string[] args)
         {
 
-            try
-            {
-                DeleteTable("Project2GroupGAutenticationUserTable");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            try
-            {
-                DeleteTable("Project2GroupGUserTable");
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            try
-            {
-                DeleteTable("Project2GroupGAutenticationTable");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            try
-            {
-                CreateTableUser("Project2GroupGUserTable");
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            try
-            {
-                CreateTableAutentication("Project2GroupGAutenticationTable");
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            try
-            {
-                CreateTableAutenticationUser("Project2GroupGAutenticationUserTable");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            Clear();
             try
             {
                 ConnectDB();

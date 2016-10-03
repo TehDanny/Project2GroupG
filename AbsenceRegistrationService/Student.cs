@@ -7,7 +7,7 @@ namespace AbsenceRegistrationService
 {
     public class Student : User
     {
-        public Student(string email, string name, string surname, string encryptedPassword, string type) : base(email, name, surname, encryptedPassword,"student")
+        public Student(string email, string name, string surname, string encryptedPassword) : base(email, name, surname, encryptedPassword,"student")
         {
         }
     }

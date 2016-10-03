@@ -64,7 +64,7 @@ namespace AbsenceRegistrationService
             sqlCommandString = "INSERT INTO  Project2GroupGAutenticationTable (dateaut,timeaut, mac,ip) VALUES('" + obj.GetDate().ToString("yyyy-MM-dd HH:mm:ss.fff") + "','" + obj.GetDate().TimeOfDay + "', " + "'" + obj.GetMac() + "','"+obj.GetIp()+"');";
             this.DoVoidCommand(this.sqlCommandString);
             int lastindex = base.LastIndexAutenticationTable();
-            sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable (timeindex,email) VALUES('" + lastindex + "'," + obj.GetEmail()==null?"NULL":("'"+obj.GetEmail()+"'") + ");";
+            sqlCommandString = "INSERT INTO  Project2GroupGAutenticationUserTable (timeindex,email) VALUES('" + lastindex + "','" + obj.GetEmail() + "');";
             this.DoVoidCommand(this.sqlCommandString);
         }
         public UserPresence Read(string key)//last autentication
