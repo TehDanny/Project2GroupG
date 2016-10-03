@@ -25,7 +25,19 @@ namespace AbsenceRegistrationService
             base.Disconnect();
             return default(T);
         }
-
+        protected LinkedList<T> ReadSomeRowesTypeFromCommandStringeOneField<T>(string commandString, string fieldName)
+        {
+            LinkedList<T> results = new LinkedList<T>();
+            base.Connect();
+            cmd = new SqlCommand(commandString, base.GetSqlConnection());
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                results.AddLast((T)reader[fieldName]);
+            }
+            base.Disconnect();
+            return results;
+        }
         protected LinkedList<int> GetTimeIndexesFromEmail(string key)
         {
             sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable where email='" + key + "'";
@@ -41,10 +53,7 @@ namespace AbsenceRegistrationService
             return indexes;
         }
 
-        protected T ReadTypeFromCommandStringeMultipleFields<T>(string commandString,params string[] fieldNames)
-        {
-            return default(T);
-        }
+        
         protected int LastIndexAutenticationTable()
         {
             sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
