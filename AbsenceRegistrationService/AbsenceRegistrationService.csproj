@@ -126,6 +126,8 @@
     <Compile Include="MsSqlOperations.cs" />
     <Compile Include="MsSqlPresenceDataMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Student.cs" />
+    <Compile Include="Teacher.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserPresence.cs" />
   </ItemGroup>

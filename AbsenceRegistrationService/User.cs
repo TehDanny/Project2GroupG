@@ -11,23 +11,20 @@ namespace AbsenceRegistrationService
 
         public string GetEmail()
         {
-            throw new NotImplementedException();
+            return null;
         }
         public string GetEncryptedPassword()
         {
-            throw new NotImplementedException();
+            return null;
         }
         public string GetName()
         {
-            throw new NotImplementedException();
+            return null;
         }
         public string GetSurname()
         {
-            throw new NotImplementedException();
+            return null;
         }
-        public string GetUserType()//called in this way because GetType already exists
-        {
-            throw new NotImplementedException();
-        }
+        public abstract string GetUserType();//called in this way because GetType already exists
     }
 }
