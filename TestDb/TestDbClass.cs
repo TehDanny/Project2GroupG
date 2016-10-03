@@ -6,19 +6,19 @@ using ManageDb;
 namespace TestDb
 {
     [TestClass]
-    public class UnitTest1
+    public class TestDbClass
     {
-        MsSqlPresenceDataMapper ldm = new MsSqlPresenceDataMapper();
+        MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
         [TestMethod]
-        public void TestMethod1()
+        public void CreateUserOK()
         {
-            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello@gmail.com", "12345678901234567", "123456789012345");
+            User u = new Student();
             try
             {
                 ManageDbProgram.Clear();
-                ldm.Create(up);
+                ldm.Create(u);
                 Assert.IsTrue(true);
-                ldm.Delete(up.GetEmail());
+                ldm.Delete(u.GetEmail());
             }
             catch(Exception e)
             {
