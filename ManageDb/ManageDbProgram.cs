@@ -7,12 +7,23 @@ using System.Threading.Tasks;
 
 namespace ManageDb
 {
-    class ManageDb
+    public class ManageDbProgram
     {
         private static SqlConnection dbconn= new SqlConnection("Data Source = ealdb1.eal.local;Initial Catalog=EAL5_DB;Persist Security Info=true;User ID=EAL5_USR;Password=Huff05e05");
         private static string sqlCommandString="";
         private static SqlCommand cmd;
         private static SqlDataReader reader;
+        public static void Clear()
+        {
+            ConnectDB();
+            sqlCommandString = "DELETE FROM Project2GroupGUserTable;";
+            cmd = new SqlCommand(sqlCommandString, dbconn);
+            cmd.ExecuteNonQuery();
+            sqlCommandString = "DELETE FROM Project2GroupGAutenticationTable;";
+            cmd = new SqlCommand(sqlCommandString, dbconn);
+            cmd.ExecuteNonQuery();
+            CloseDB();
+        }
         private static void ConnectDB()
         {
             
