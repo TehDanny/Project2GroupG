@@ -6,6 +6,8 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Text;
 using Login_Component;
+using System.Web;
+using System.ServiceModel.Activation;
 
 namespace AbsenceRegistrationService
 {
@@ -15,19 +17,39 @@ namespace AbsenceRegistrationService
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
     public class AbsenceRegistration : IAbsenceRegistration
     {
+
+        MsSqlLoginDataMapper ldm;
+        Login l;
+
         //We might want to use a singleton for the Login and MsSqlLoginDataMapper instead of creating those in every method
         public void CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
-            MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
-            Login l = new Login(ldm);
+            InitializeFromSession();
+
             l.CreateUser(email, fisrtname, surname, password, confirmPassword);
         }
 
         public void LoginUser(string email, string password)
         {
-            MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
-            Login l = new Login(ldm);
+            InitializeFromSession();
             l.LoginUser(email, password);
+        }
+
+        //TODO: find a better name, eventually
+        private void InitializeFromSession()
+        {
+            if (HttpContext.Current.Session["ldm"] == null)
+            {
+                ldm = new MsSqlLoginDataMapper();
+                l = new Login(ldm);
+                HttpContext.Current.Session["ldm"] = ldm;
+                HttpContext.Current.Session["l"] = l;
+            }
+            else
+            {
+                ldm = (MsSqlLoginDataMapper)HttpContext.Current.Session["ldm"];
+                l = (Login)HttpContext.Current.Session["l"];
+            }
         }
     }
 }
