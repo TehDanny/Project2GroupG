@@ -2,7 +2,7 @@
 
 namespace AbsenceRegistrationService
 {
-    public abstract class User
+    public class User
     {
 
         private string email;
