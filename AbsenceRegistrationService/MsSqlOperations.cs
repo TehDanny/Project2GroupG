@@ -12,22 +12,36 @@ namespace AbsenceRegistrationService
         protected SqlCommand cmd;
         protected SqlDataReader reader;
 
-        protected T ReadOneRowTypeFromCommandStringOneField<T>(string commandString, string fieldName)
+        protected T ReadOneRowOneTypeFromCommandStringOneField<T>(string commandString, string fieldName)
         {
 
             T result;
-            result=default(T);
-            result = (T)Activator.CreateInstance(typeof(T), new object[] { result });
+            result = default(T);
             base.Connect();
             cmd = new SqlCommand(commandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                object o;
-                o= reader[fieldName];
-                result.GetType();
-                
                 result =(T)reader[fieldName];
+            }
+            base.Disconnect();
+            return result;
+        }
+        protected User ReadUser(string commandString)
+        {
+
+            User result = null;
+            base.Connect();
+            cmd = new SqlCommand(commandString, base.GetSqlConnection());
+            reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                string email = (string)reader["email"];
+                string name = (string)reader["name"];
+                string surname = (string)reader["surname"];
+                string encryptedPassword = (string)reader["encryptedPassword"];
+                string type = (string)reader["type"];
+                result = new User(email, name, surname, encryptedPassword, type);
             }
             base.Disconnect();
             return result;
@@ -64,12 +78,12 @@ namespace AbsenceRegistrationService
         protected int LastIndexAutenticationTable()
         {
             sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
-            return this.ReadOneRowTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
+            return this.ReadOneRowOneTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
         protected int GetLastTimeIndexFromEmail(string email)
         {
             sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable where email='"+email+"' ORDER BY timeindex desc";
-            return this.ReadOneRowTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
+            return this.ReadOneRowOneTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
         protected void DoVoidCommand(string commandString)
         {
