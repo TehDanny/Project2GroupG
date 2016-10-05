@@ -14,7 +14,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserOK()
         {
-            User u = new User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
+            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
             try
             {
                 ManageDbProgram.Clear();
@@ -31,7 +31,7 @@ namespace TestDb
         public void CreateUserPresenceOK()
         {
             UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello@gmail.com", "12345678901234567","123456789012345");
-            User u = new User("ferocemarcello@gmail.com", "marcello", "feroce","123456","student");
+            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce","123456","student");
             try
             {
                 ManageDbProgram.Clear();
@@ -49,7 +49,7 @@ namespace TestDb
         public void CreateUserPresenceTooLongMac()
         {
             UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello@gmail.com", "123456789012345678", "123456789012345");
-            User u = new User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
+            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
             try
             {
                 ManageDbProgram.Clear();
@@ -70,7 +70,7 @@ namespace TestDb
         public void CreateUserPresenceTooLongIp()
         {
             UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello@gmail.com", "12345678901234567", "1234567890123456");
-            User u = new User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
+            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
             try
             {
                 ManageDbProgram.Clear();
@@ -90,8 +90,8 @@ namespace TestDb
         [TestMethod]
         public void ReadUserOK()
         {
-            User u = new User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","teacher");
-            User secondU;
+            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","teacher");
+            Login_Component.User secondU;
             try
             {
                 ManageDbProgram.Clear();

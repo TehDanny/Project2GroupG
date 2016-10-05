@@ -27,10 +27,10 @@ namespace AbsenceRegistrationService
             base.Disconnect();
             return result;
         }
-        protected User ReadUser(string commandString)
+        protected Login_Component.User ReadUser(string commandString)
         {
 
-            User result = null;
+            Login_Component.User result = null;
             base.Connect();
             cmd = new SqlCommand(commandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
@@ -41,7 +41,7 @@ namespace AbsenceRegistrationService
                 string surname = (string)reader["surname"];
                 string encryptedPassword = (string)reader["encryptedPassword"];
                 string type = (string)reader["type"];
-                result = new User(email, name, surname, encryptedPassword, type);
+                result = new Login_Component.User(email, name, surname, encryptedPassword, type);
             }
             base.Disconnect();
             return result;
