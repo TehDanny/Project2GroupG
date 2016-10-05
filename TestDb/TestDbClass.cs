@@ -17,7 +17,6 @@ namespace TestDb
             Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
             try
             {
-                ManageDbProgram.Clear();
                 ldm.Create(u);
                 Assert.IsTrue(true);
             }
@@ -30,11 +29,10 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceOK()
         {
-            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello@gmail.com", "12345678901234567","123456789012345");
-            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce","123456","student");
+            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello2@gmail.com", "12345678901234567","123456789012345");
+            Login_Component.User u = new Login_Component.User("ferocemarcello2@gmail.com", "marcello", "feroce","123456","student");
             try
             {
-                ManageDbProgram.Clear();
                 ldm.Create(u);
                 pdm.Create(up);
                 Assert.IsTrue(true);
@@ -48,11 +46,10 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceTooLongMac()
         {
-            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello@gmail.com", "123456789012345678", "123456789012345");
-            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
+            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello3@gmail.com", "123456789012345678", "123456789012345");
+            Login_Component.User u = new Login_Component.User("ferocemarcello3@gmail.com", "marcello", "feroce", "123456","student");
             try
             {
-                ManageDbProgram.Clear();
                 ldm.Create(u);
                 pdm.Create(up);
                 Assert.IsTrue(false);
@@ -69,11 +66,10 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceTooLongIp()
         {
-            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello@gmail.com", "12345678901234567", "1234567890123456");
-            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","student");
+            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello4@gmail.com", "12345678901234567", "1234567890123456");
+            Login_Component.User u = new Login_Component.User("ferocemarcello4@gmail.com", "marcello", "feroce", "123456","student");
             try
             {
-                ManageDbProgram.Clear();
                 ldm.Create(u);
                 pdm.Create(up);
                 Assert.IsTrue(false);
@@ -90,13 +86,12 @@ namespace TestDb
         [TestMethod]
         public void ReadUserOK()
         {
-            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456","teacher");
+            Login_Component.User u = new Login_Component.User("ferocemarcello5@gmail.com", "marcello", "feroce", "123456","teacher");
             Login_Component.User secondU;
             try
             {
-                ManageDbProgram.Clear();
                 ldm.Create(u);
-                secondU = ldm.Read("ferocemarcello@gmail.com");
+                secondU = ldm.Read("ferocemarcello5@gmail.com");
                 Assert.IsTrue(secondU.UserEquals(u));
             }
             catch (Exception e)
@@ -108,16 +103,32 @@ namespace TestDb
         [TestMethod]
         public void ReadPresenceOK()
         {
-            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456", "teacher");
-            UserPresence up = new UserPresence(DateTime.Now,"ferocemarcello@gmail.com","12345678901234567","123456789012345");
+            Login_Component.User u = new Login_Component.User("ferocemarcello6@gmail.com", "marcello", "feroce", "123456", "teacher");
+            UserPresence up = new UserPresence(DateTime.Now,"ferocemarcello6@gmail.com","12345678901234567","123456789012345");
             UserPresence up2;
             try
             {
-                ManageDbProgram.Clear();
                 ldm.Create(u);
                 pdm.Create(up);
-                up2 = pdm.Read("ferocemarcello@gmail.com");
+                up2 = pdm.Read("ferocemarcello6@gmail.com");
                 Assert.IsTrue(up2.EqualsPresence(up));
+            }
+            catch (Exception e)
+            {
+                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
+                Assert.IsTrue(false);
+            }
+        }
+        [TestMethod]
+        public void DeleteUserOK()
+        {
+            Login_Component.User u = new Login_Component.User("ferocemarcello7@gmail.com", "marcello", "feroce", "123456", "student");
+            try
+            {
+                ldm.Create(u);
+                ldm.Delete(u.GetEmail());
+                Assert.IsTrue(ldm.Read(u.GetEmail())==null);
+                
             }
             catch (Exception e)
             {
