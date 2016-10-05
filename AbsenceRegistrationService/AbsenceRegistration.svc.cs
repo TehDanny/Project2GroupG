@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using Login_Component;
 using System.Web;
-using System.ServiceModel.Activation;
+using System.ServiceModel.Channels;
 
 namespace AbsenceRegistrationService
 {
