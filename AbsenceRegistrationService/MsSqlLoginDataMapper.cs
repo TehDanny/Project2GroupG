@@ -21,7 +21,7 @@ namespace AbsenceRegistrationService
         public Login_Component.User Read(string key)
         {
             sqlCommandString = "select email,encryptedpassword,name,surname,type from Project2GroupGUserTable where email='" + key + "'";
-            return base.ReadOneRowTypeFromCommandStringOneField<Login_Component.User>(sqlCommandString, "email");
+            return base.ReadUser(sqlCommandString);
         }
         public void Update(Login_Component.User obj)
         {
