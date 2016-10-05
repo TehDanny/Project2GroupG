@@ -15,7 +15,14 @@ namespace AbsenceRegistrationService
             this.mac = mac;
             this.ip = ip;
         }
-
+        public bool EqualsPresence(UserPresence up)
+        {
+            if(this.email.Equals(up.GetEmail())&& this.mac.Equals(up.GetMac())&& this.ip.Equals(up.GetIp())&& this.dt.Equals(up.GetDate()))
+            {
+                return true;
+            }
+            return false;
+        }
         public DateTime GetDate()
         {
             return this.dt;

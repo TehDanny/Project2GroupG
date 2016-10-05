@@ -86,7 +86,7 @@ namespace AbsenceRegistrationService
                 ip = (string)reader["ip"];
             }
             base.Disconnect();
-            dt.Add(ts);
+            dt=dt.Add(ts);
             UserPresence up = new UserPresence(dt, key, mac, ip);
             return up;
         }
