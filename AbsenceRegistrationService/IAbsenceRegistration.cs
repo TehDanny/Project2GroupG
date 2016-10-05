@@ -13,5 +13,8 @@ namespace AbsenceRegistrationService
 
         [OperationContract]
         void LoginUser(string email, string password);
+
+        [OperationContract]
+        void CheckIn();
     }
 }

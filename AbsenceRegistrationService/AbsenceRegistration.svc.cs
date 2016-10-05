@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
-using System.Text;
 using Login_Component;
 using System.Web;
-using System.ServiceModel.Activation;
+using System.ServiceModel.Channels;
 
 namespace AbsenceRegistrationService
 {
@@ -21,22 +17,85 @@ namespace AbsenceRegistrationService
         MsSqlLoginDataMapper ldm;
         Login l;
 
-        //We might want to use a singleton for the Login and MsSqlLoginDataMapper instead of creating those in every method
+        MsSqlPresenceDataMapper pdm;
+        string email;
+
         public void CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
-            InitializeFromSession();
-
+            InitializeLoginFromSession();
             l.CreateUser(email, fisrtname, surname, password, confirmPassword);
+            LoginUser(email, password);
         }
 
         public void LoginUser(string email, string password)
         {
-            InitializeFromSession();
+            InitializeLoginFromSession();
             l.LoginUser(email, password);
+            HttpContext.Current.Session["email"] = email;
+        }
+
+        public void CheckIn()
+        {
+            //Check if the user has previously logged-in
+            CheckLoggedIn();
+
+            //We take the IP address
+            string ip = GetClientIP();
+
+            //Check IP
+            CheckIP(ip);
+
+            //Save to DB
+            InitializePresenceDataMapperFromSession();
+            
+            string mac = GetClientMac();
+            UserPresence up = new UserPresence(DateTime.Now, email, mac, ip);
+            
+            pdm.Create(up);
+
+        }
+
+        private string GetClientMac()
+        {
+            throw new NotImplementedException();
+        }
+
+        //Not the best checkIP ever, gonna improve when we make more research on subnet masks
+        private void CheckIP(string ip)
+        {
+            if (!ip.StartsWith("10"))
+                throw new Exception("IP outside eal");
+
+            //Subnet mask of EAL: 255.255.240.0
+        }
+
+        private void CheckLoggedIn()
+        {
+            if (HttpContext.Current.Session["emai"] != null)
+                email = (string)HttpContext.Current.Session["emai"];
+            else
+                throw new Exception("User not connected");
+        }
+        
+        //Must move this into another class, there's the risk of this class getting too huge
+        string GetClientIP()
+        {
+            //THE IP IS NOT CORRECT SO FAR
+            //So far copy-pasted code, hopefully we'll make sense of it by looking at the documentation.
+            MessageProperties incomingMessageProperties = OperationContext.Current.IncomingMessageProperties;
+
+            RemoteEndpointMessageProperty remoteEndpointMessageProperty = incomingMessageProperties[RemoteEndpointMessageProperty.Name]
+                as RemoteEndpointMessageProperty;
+            
+            string ip = remoteEndpointMessageProperty.Address;
+
+            return ip;
         }
 
         //TODO: find a better name, eventually
-        private void InitializeFromSession()
+        //Might do: create a more generic method for that that takes in some parameters,
+        //so we can only have one of those instead of 2 (or probably even more in the future)
+        private void InitializeLoginFromSession()
         {
             if (HttpContext.Current.Session["ldm"] == null)
             {
@@ -50,6 +109,17 @@ namespace AbsenceRegistrationService
                 ldm = (MsSqlLoginDataMapper)HttpContext.Current.Session["ldm"];
                 l = (Login)HttpContext.Current.Session["l"];
             }
+        }
+
+        private void InitializePresenceDataMapperFromSession()
+        {
+            if (HttpContext.Current.Session["pdm"] == null)
+            {
+                pdm = new MsSqlPresenceDataMapper();
+                HttpContext.Current.Session["pdm"] = pdm;
+            }
+            else
+                pdm = (MsSqlPresenceDataMapper) HttpContext.Current.Session["pdm"];
         }
     }
 }
