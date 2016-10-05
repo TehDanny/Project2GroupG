@@ -23,9 +23,10 @@ namespace AbsenceRegistrationService
             sqlCommandString = "select email,encryptedpassword,name,surname,type from Project2GroupGUserTable where email='" + key + "'";
             return base.ReadUser(sqlCommandString);
         }
-        public void Update(Login_Component.User obj)
+        public void Update(Login_Component.User obj)//the email has to be the same
         {
-            sqlCommandString = "UPDATE Project2GroupGUserTable SET email='" + obj.GetEmail() + "',encryptedpassword='" + obj.GetEncryptedPassword() + "',name='" + obj.GetName() + "',surname='" + obj.GetSurname() + "',type='" + obj.GetUserType() + "' WHERE email='" + obj.GetEmail() + "';";
+            string type = (obj.GetUserType() == null) ? "NULL" : ("'"+obj.GetUserType()+"'");
+            sqlCommandString = "UPDATE Project2GroupGUserTable SET email='" + obj.GetEmail() + "',encryptedpassword='" + obj.GetEncryptedPassword() + "',name='" + obj.GetName() + "',surname='" + obj.GetSurname() + "',type=" +type + " WHERE email='" + obj.GetEmail() + "';";
             base.DoVoidCommand(sqlCommandString);
         }
     }

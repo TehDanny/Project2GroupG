@@ -145,5 +145,21 @@ namespace TestDb
                 Assert.IsTrue(false);
             }
         }
+        [TestMethod]
+        public void UpdateUserOK()
+        {
+            Login_Component.User u = new Login_Component.User("ferocemarcello9@gmail.com", "marcello", "feroce", "123456", "student");
+            Login_Component.User u2 = new Login_Component.User("ferocemarcello9@gmail.com", "marcell", "feroc", "1234567", null);
+            try
+            {
+                ldm.Create(u);
+                ldm.Update(u2);
+                Assert.IsTrue(true);
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(false);
+            }
+        }
     }
 }
