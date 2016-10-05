@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Text;
+using Login_Component;
 
 namespace AbsenceRegistrationService
 {
@@ -14,8 +15,13 @@ namespace AbsenceRegistrationService
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
     public class AbsenceRegistration : IAbsenceRegistration
     {
-        public void DoWork()
+        //We might want to use a singleton for the Login and MsSqlLoginDataMapper instead of creating those in every method
+        public void CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
+            MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
+            Login l = new Login(ldm);
+            l.CreateUser(email, fisrtname, surname, password, confirmPassword);
         }
+
     }
 }

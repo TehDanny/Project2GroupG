@@ -6,7 +6,9 @@ namespace AbsenceRegistrationService
     [ServiceContract]
     public interface IAbsenceRegistration
     {
+
+        //Should those passwords already be encrypted by the client?
         [OperationContract]
-        void DoWork();
+        void CreateUser(string email, string password, string confirmPassword, string fisrtname, string surname);
     }
 }
