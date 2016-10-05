@@ -3,14 +3,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AbsenceRegistrationService;
 using ManageDb;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace TestDb
 {
     [TestClass]
     public class TestDbClass
     {
-        MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
-        MsSqlPresenceDataMapper pdm = new MsSqlPresenceDataMapper();
+        private MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
+        private MsSqlPresenceDataMapper pdm = new MsSqlPresenceDataMapper();
         [TestMethod]
         public void CreateUserOK()
         {
@@ -22,7 +23,6 @@ namespace TestDb
             }
             catch(Exception e)
             {
-                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
                 Assert.IsTrue(false);
             }
         }
@@ -39,13 +39,14 @@ namespace TestDb
             }
             catch (Exception e)
             {
-                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
                 Assert.IsTrue(false);
             }
         }
         [TestMethod]
         public void CreateUserPresenceTooLongMac()
         {
+            string pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string pathDownload = Path.Combine(pathUser, "Downloads");
             UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello3@gmail.com", "123456789012345678", "123456789012345");
             Login_Component.User u = new Login_Component.User("ferocemarcello3@gmail.com", "marcello", "feroce", "123456","student");
             try
@@ -56,10 +57,6 @@ namespace TestDb
             }
             catch (SqlException e)
             {
-                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.StackTrace);
-                //System.IO.File.AppendAllText(@"C:\Users\feroc\Downloads\Message.txt",e.GetType().ToString());
-                //System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.InnerException.Message);
-                //Console.WriteLine(e.GetType());
                 Assert.IsTrue(true);
             }
         }
@@ -76,10 +73,6 @@ namespace TestDb
             }
             catch (SqlException e)
             {
-                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.StackTrace);
-                //System.IO.File.AppendAllText(@"C:\Users\feroc\Downloads\Message.txt",e.GetType().ToString());
-                //System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.InnerException.Message);
-                //Console.WriteLine(e.GetType());
                 Assert.IsTrue(true);
             }
         }
@@ -96,7 +89,6 @@ namespace TestDb
             }
             catch (Exception e)
             {
-                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
                 Assert.IsTrue(false);
             }
         }
@@ -115,7 +107,6 @@ namespace TestDb
             }
             catch (Exception e)
             {
-                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
                 Assert.IsTrue(false);
             }
         }
@@ -132,7 +123,25 @@ namespace TestDb
             }
             catch (Exception e)
             {
-                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
+                Assert.IsTrue(false);
+            }
+        }
+        [TestMethod]
+        public void DeleteUserPresenceOK()
+        {
+            UserPresence up = new UserPresence(DateTime.Now, "ferocemarcello8@gmail.com", "12345678901234567", "123456789012345");
+            Login_Component.User u = new Login_Component.User("ferocemarcello8@gmail.com", "marcello", "feroce", "123456", "student");
+            try
+            {
+                ldm.Create(u);
+                pdm.Create(up);
+                pdm.Delete(u.GetEmail());
+                up = pdm.Read(u.GetEmail());
+                Assert.IsTrue(up == null);
+
+            }
+            catch (Exception e)
+            {
                 Assert.IsTrue(false);
             }
         }

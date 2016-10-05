@@ -70,6 +70,7 @@ namespace AbsenceRegistrationService
         public UserPresence Read(string key)//last autentication
         {
             int index=base.GetLastTimeIndexFromEmail(key);
+            if (index == 0) return null;
             base.Connect();
             sqlCommandString = "select dateaut,timeaut,mac,ip from Project2GroupGAutenticationTable where timeindex='" + index + "'";
             cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
