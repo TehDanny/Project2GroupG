@@ -105,5 +105,25 @@ namespace TestDb
                 Assert.IsTrue(false);
             }
         }
+        [TestMethod]
+        public void ReadPresenceOK()
+        {
+            Login_Component.User u = new Login_Component.User("ferocemarcello@gmail.com", "marcello", "feroce", "123456", "teacher");
+            UserPresence up = new UserPresence(DateTime.Now,"ferocemarcello@gmail.com","12345678901234567","123456789012345");
+            UserPresence up2;
+            try
+            {
+                ManageDbProgram.Clear();
+                ldm.Create(u);
+                pdm.Create(up);
+                up2 = pdm.Read("ferocemarcello@gmail.com");
+                Assert.IsTrue(up2.EqualsPresence(up));
+            }
+            catch (Exception e)
+            {
+                System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
+                Assert.IsTrue(false);
+            }
+        }
     }
 }
