@@ -97,14 +97,13 @@ namespace TestDb
                 ManageDbProgram.Clear();
                 ldm.Create(u);
                 secondU = ldm.Read("ferocemarcello@gmail.com");
-                Assert.IsTrue(secondU.Equals(u));
+                Assert.IsTrue(secondU.UserEquals(u));
             }
             catch (Exception e)
             {
                 System.IO.File.WriteAllText(@"C:\Users\feroc\Downloads\Message.txt", e.Message);
                 Assert.IsTrue(false);
             }
-            Assert.IsTrue(false);
         }
     }
 }

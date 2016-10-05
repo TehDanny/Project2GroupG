@@ -18,6 +18,14 @@ namespace AbsenceRegistrationService
             this.encryptedPassword = encryptedPassword;
             this.type = type;
         }
+        public bool UserEquals(User u)
+        {
+            if(this.email.Equals(u.GetEmail())&& this.name.Equals(u.GetName())&& this.surname.Equals(u.GetSurname())&& this.encryptedPassword.Equals(u.GetEncryptedPassword())&& this.type.Equals(u.GetUserType()))
+            {
+                return true;
+            }
+            return false;
+        }
         public string GetEmail()
         {
             return this.email;
