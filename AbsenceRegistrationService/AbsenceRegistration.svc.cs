@@ -23,5 +23,11 @@ namespace AbsenceRegistrationService
             l.CreateUser(email, fisrtname, surname, password, confirmPassword);
         }
 
+        public void LoginUser(string email, string password)
+        {
+            MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
+            Login l = new Login(ldm);
+            l.LoginUser(email, password);
+        }
     }
 }
