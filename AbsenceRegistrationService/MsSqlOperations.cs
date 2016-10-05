@@ -82,7 +82,7 @@ namespace AbsenceRegistrationService
         }
         protected int GetLastTimeIndexFromEmail(string email)
         {
-            sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable where email='"+email+"' ORDER BY timeindex desc";
+            sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable WHERE email='"+email+"' ORDER BY timeindex desc";
             return this.ReadOneRowOneTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
         protected void DoVoidCommand(string commandString)

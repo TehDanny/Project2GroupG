@@ -59,7 +59,7 @@ namespace ManageDb
         private static void CreateTableAutentication(string table_name)
         {
             ConnectDB();
-            sqlCommandString = "CREATE TABLE " + table_name + "(timeindex int IDENTITY(0,1)" +/*IDENTITY(0,1) means auto incremental value, starting by 0, incrementing by 1 each time*/" NOT NULL,dateaut date NOT NULL, timeaut time NOT NULL, mac varchar(17),ip varchar(15)PRIMARY KEY (timeindex));";
+            sqlCommandString = "CREATE TABLE " + table_name + "(timeindex int IDENTITY(1,1)" +/*IDENTITY(0,1) means auto incremental value, starting by 0, incrementing by 1 each time*/" NOT NULL,dateaut date NOT NULL, timeaut time NOT NULL, mac varchar(17),ip varchar(15)PRIMARY KEY (timeindex));";
             cmd = new SqlCommand(sqlCommandString, dbconn);
             cmd.ExecuteNonQuery();
             CloseDB();
@@ -74,8 +74,15 @@ namespace ManageDb
         }
         public static void Main(string[] args)
         {
-
+            
+            DeleteTable("Project2GroupGAutenticationUserTable");
+            DeleteTable("Project2GroupGUserTable");
+            DeleteTable("Project2GroupGAutenticationTable");
+            CreateTableAutentication("Project2GroupGAutenticationTable");
+            CreateTableUser("Project2GroupGUserTable");
+            CreateTableAutenticationUser("Project2GroupGAutenticationUserTable");
             Clear();
+            
             try
             {
                 ConnectDB();
