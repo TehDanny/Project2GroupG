@@ -5,8 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AbsenceRegistrationClient {
-    class Program {
+    class WebController {
+        private List<DateTime> registrationList = new List<DateTime>();
+        private DateTime nextRegistration;
         static void Main(string[] args) {
+            
+
         }
     }
 }
