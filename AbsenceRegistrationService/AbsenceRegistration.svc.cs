@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using Login_Component;
 using System.Web;
 using System.ServiceModel.Channels;
+using System.Collections.Generic;
 
 namespace AbsenceRegistrationService
 {
@@ -56,6 +54,31 @@ namespace AbsenceRegistrationService
             
             pdm.Create(up);
 
+        }
+
+        public LinkedList<UserPresence> GetAllUsersHistory()
+        {
+            //Chech if the user has previously logged-in and if he is a teacher
+            CheckLoggedInAsTeacher();
+
+            //Read from DB
+            InitializePresenceDataMapperFromSession();
+            LinkedList<UserPresence> history = pdm.ReadAllUsersHistory();
+
+            return history;
+        }
+
+        //Maybe it's too similar to CheckLoggedIn, might want to remove the duplicate code.
+        private void CheckLoggedInAsTeacher()
+        {
+            if (HttpContext.Current.Session["emai"] != null)
+            {
+                email = (string)HttpContext.Current.Session["emai"];
+                if (email.Contains("@edu.eal.dk"))
+                    throw new Exception("User is not a teacher");
+            }
+            else
+                throw new Exception("User not connected");
         }
 
         private string GetClientMac()
@@ -124,5 +147,6 @@ namespace AbsenceRegistrationService
             else
                 pdm = (MsSqlPresenceDataMapper) HttpContext.Current.Session["pdm"];
         }
+
     }
 }

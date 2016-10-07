@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 
 namespace AbsenceRegistrationService
 {
@@ -16,5 +17,8 @@ namespace AbsenceRegistrationService
 
         [OperationContract]
         void CheckIn();
+
+        [OperationContract]
+        LinkedList<UserPresence> GetAllUsersHistory();
     }
 }
