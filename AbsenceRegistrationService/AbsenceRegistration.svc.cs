@@ -73,6 +73,23 @@ namespace AbsenceRegistrationService
             return history;
         }
 
+        public bool GetUserPresent(string email)
+        {
+
+            //Chech if the user has previously logged-in and if he is a teacher
+            CheckLoggedInAsTeacher();
+
+            //Read from DB
+            InitializePresenceDataMapperFromSession();
+            UserPresence tmp = pdm.Read(email);
+
+            //Check if the last presence matches with the current time
+            if (tmp.GetDate().Hour == DateTime.Now.Hour)
+                return true;
+            else
+                return false;
+        }
+
         //Maybe it's too similar to CheckLoggedIn, might want to remove the duplicate code.
         private void CheckLoggedInAsTeacher()
         {

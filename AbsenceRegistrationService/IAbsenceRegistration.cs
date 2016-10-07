@@ -20,5 +20,8 @@ namespace AbsenceRegistrationService
 
         [OperationContract]
         LinkedList<UserPresence> GetAllUsersHistory();
+
+        [OperationContract]
+        bool GetUserPresent(string email);
     }
 }
