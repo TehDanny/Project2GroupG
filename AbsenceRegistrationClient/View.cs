@@ -6,15 +6,21 @@ using System.Threading.Tasks;
 
 namespace AbsenceRegistrationClient {
     class View {
-        public void ClearScreen() {
+        /// <summary>
+        /// Clears the whole console after a given time.
+        /// </summary>
+        /// <param name="waitTime"> In milliseconds. </param>
+        public void ClearScreen(int waitTime) {
+            System.Threading.Thread.Sleep(waitTime);
             Console.Clear();
         }
-        public void PrintStatus(List<DateTime> regList, DateTime nextReg) {
+        public void PrintStatus(List<DateTime> regList) {
             Console.WriteLine("Presence status");
             foreach (DateTime reg in regList) {
                 Console.WriteLine("Checked at " + reg.ToShortTimeString());
             }
-            Console.WriteLine("Next registration will be at " + nextReg.ToShortTimeString());
+            if (regList.Last().Hour == 14) Console.WriteLine("Registration is done for today. Next registration will be tomorrow.");
+            else Console.WriteLine("Next registration will be at " + regList.Last().Hour+1);
         }
         public void PrintStudentMenu() {
             Console.WriteLine("1. Manual presence registration");
@@ -24,26 +30,47 @@ namespace AbsenceRegistrationClient {
             Console.WriteLine("2. Get history of all students");
             Console.WriteLine("3. Check current presence of a student/teacher");
         }
+        /// <summary>
+        /// Gets user to login
+        /// </summary>
+        /// <returns> A string containing both username and password with a ';' separated. </returns>
+        public string Login() {
+            string credentials = string.Empty;
+            Console.WriteLine("Login");
+            Console.Write("Username: ");
+            credentials += Console.ReadLine();
+            Console.Write("Password: ");
+            credentials += ";" + Console.ReadLine();
+            //Should we check stuff?
+            //Should we care about encrypting the password?
+            return credentials;
+        }
         public enum Message {
-            Success
+            NoPrivilige
         }
         public void PrintMessage(Message msg) {
             switch (msg) {
-                case 0: Console.WriteLine("Yay!"); break;
+                case 0: Console.WriteLine("You!"); break;
             }
         }
         public enum Command {
-            CheckIn
+            CheckIn,
+            History,
+            Current
         }
         public Command GetCommand() {
             while (true) {
                 Console.Write(">");
                 switch (Console.ReadLine()) {
                     case "1": return Command.CheckIn;
+                    case "2": return Command.History;
+                    case "3": return Command.Current;
                     default: Console.WriteLine("Wrong input. Try again."); break;
                 }
             }
-            
+        }
+        public void PrintString(string msg) {
+            Console.WriteLine(msg);
         }
     }
 }
