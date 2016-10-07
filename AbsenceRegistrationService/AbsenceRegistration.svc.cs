@@ -20,17 +20,12 @@ namespace AbsenceRegistrationService
 
         MsSqlPresenceDataMapper pdm;
         string email;
-        //Is the user a student or a teacher?
-        string privilege;
+        //True if teacher, false if student
+        bool isTeacher;
 
         /// <summary>
         /// Creates and logs the user in
         /// </summary>
-        /// <param name="email"></param>
-        /// <param name="fisrtname"></param>
-        /// <param name="surname"></param>
-        /// <param name="password"></param>
-        /// <param name="confirmPassword"></param>
         /// <returns>True if teacher, false if student</returns>
         public bool CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
@@ -42,8 +37,6 @@ namespace AbsenceRegistrationService
         /// <summary>
         /// Logs the user in
         /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
         /// <returns>True if teacher, false if student</returns>
         public bool LoginUser(string email, string password)
         {
@@ -52,7 +45,7 @@ namespace AbsenceRegistrationService
             HttpContext.Current.Session["email"] = email;
             if (email.Contains("@eal.dk"))
             {
-                HttpContext.Current.Session["privilege"] = "teacher";
+                HttpContext.Current.Session["isTeacher"] = true;
                 return true;
             }
             else
@@ -93,7 +86,7 @@ namespace AbsenceRegistrationService
         {
             //Chech if the user has previously logged-in and if he is a teacher
             CheckLoggedIn();
-            if (privilege != "teacher")
+            if (isTeacher == true)
                 throw new Exception("User is not a teacher");
 
             //Read from DB
@@ -108,7 +101,7 @@ namespace AbsenceRegistrationService
 
             //Chech if the user has previously logged-in and if he is a teacher
             CheckLoggedIn();
-            if (privilege != "teacher")
+            if (isTeacher == true)
                 throw new Exception("User is not a teacher");
 
             //Read from DB
@@ -141,7 +134,7 @@ namespace AbsenceRegistrationService
             if (HttpContext.Current.Session["emai"] != null && HttpContext.Current.Session["privilege"] != null)
             {
                 email = (string)HttpContext.Current.Session["emai"];
-                privilege = (string)HttpContext.Current.Session["privilege"];
+                isTeacher = (bool)HttpContext.Current.Session["isTeacher"];
             }
             else
                 throw new Exception("User not logged in");
