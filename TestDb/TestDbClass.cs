@@ -72,6 +72,61 @@ namespace TestDb
             }
         }
         [TestMethod]
+        public void ReadAllUsersHistoryOK()
+        {
+            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
+            ldm.Create(u);
+            LinkedList<UserPresence> upl = new LinkedList<UserPresence>();
+            DateTime dt = DateTime.Now;
+            UserPresence up = new UserPresence(dt, u.GetEmail(), "lnn", "jln");
+            pdm.Create(up);
+            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
+            ldm.Create(u);
+            UserPresence up2 = new UserPresence(dt, u.GetEmail(), "lnn", "jln");
+            pdm.Create(up2);
+            try
+            {
+                upl=pdm.ReadAllUsersHistory();
+                Assert.IsTrue(true);
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(false);
+            }
+        }
+        [TestMethod]
+        public void ReadOneUserHistoryOK()
+        {
+            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
+            ldm.Create(u);
+            LinkedList<UserPresence> upl = new LinkedList<UserPresence>();
+            for(int i = 0; i < 12; i++)
+            {
+                pdm.Create(new UserPresence(DateTime.Now, email, "34543345", "34543"));
+            }
+            try
+            {
+                upl = pdm.ReadUserHistory(email);
+                bool correct = true;
+                foreach(UserPresence up in upl)
+                {
+                    if (!(up.GetEmail().Equals(email)))
+                    {
+                        correct = false;
+                    }
+                }
+                Assert.IsTrue(correct);
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(false);
+            }
+        }
+        
+        [TestMethod]
         public void CreateUserPresenceTooLongMac()
         {
             email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);

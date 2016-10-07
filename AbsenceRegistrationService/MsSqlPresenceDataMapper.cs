@@ -17,38 +17,21 @@ namespace AbsenceRegistrationService
 
         public LinkedList<UserPresence> ReadUserHistory(string key)
         {
-            LinkedList<int> indexes = new LinkedList<int>();
-            lock (MsSqlPresenceDataMapper.thisLock)
+            LinkedList<UserPresence> usp = new LinkedList<UserPresence>();
+            foreach(UserPresence up in this.ReadAllUsersHistory())
             {
-                indexes = base.GetTimeIndexesFromEmail(key);
+                if (up.GetEmail().Equals(key))
+                {
+                    usp.AddLast(up);
+                }
             }
-            LinkedList<UserPresence> userPresences = new LinkedList<UserPresence>();
-            string indexesString = string.Join(",", indexes.ToArray());
-            string sqlCommandString = "select dateaut,timeaut,mac,ip from Project2GroupGAutenticationTable where timeindex in+'" + indexesString + "'";
-            base.Connect();
-            cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
-            reader = cmd.ExecuteReader();
-            DateTime dt = new DateTime();
-            TimeSpan ts = new TimeSpan();
-            string mac = "";
-            string ip = "";
-            while (reader.Read())
-            {
-                dt = (DateTime)reader["dateaut"];
-                ts = (TimeSpan)reader["timeaut"];
-                mac = (string)reader["mac"];
-                ip = (string)reader["ip"];
-                dt.Add(ts);
-                userPresences.AddLast(new UserPresence(dt, key, mac, ip));
-            }
-            base.Disconnect();
-            return userPresences;
+            return usp;
         }
 
         public LinkedList<UserPresence> ReadAllUsersHistory()
         {
             LinkedList<UserPresence> userPresences = new LinkedList<UserPresence>();
-            string sqlCommandString = "select email,dateaut,timeaut,mac,ip from Project2GroupGAutenticationTable";
+            string sqlCommandString = "select dateaut,timeaut,mac,ip,email from Project2GroupGAutenticationTable,Project2GroupGAutenticationUserTable where Project2GroupGAutenticationTable.timeindex=Project2GroupGAutenticationUserTable.timeindex";
             base.Connect();
             cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
