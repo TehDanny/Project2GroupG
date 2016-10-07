@@ -20,19 +20,40 @@ namespace AbsenceRegistrationService
 
         MsSqlPresenceDataMapper pdm;
         string email;
+        //True if teacher, false if student
+        bool isTeacher;
 
-        public void CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
+        /// <summary>
+        /// Creates and logs the user in
+        /// </summary>
+        /// <returns>True if teacher, false if student</returns>
+        public bool CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
             InitializeLoginFromSession();
             l.CreateUser(email, fisrtname, surname, password, confirmPassword);
-            LoginUser(email, password);
+            return LoginUser(email, password);
         }
 
-        public void LoginUser(string email, string password)
+        /// <summary>
+        /// Logs the user in
+        /// </summary>
+        /// <returns>True if teacher, false if student</returns>
+        public bool LoginUser(string email, string password)
         {
             InitializeLoginFromSession();
             l.LoginUser(email, password);
             HttpContext.Current.Session["email"] = email;
+            if (email.Contains("@eal.dk"))
+            {
+                HttpContext.Current.Session["isTeacher"] = true;
+                return true;
+            }
+            else
+            {
+                HttpContext.Current.Session["privilege"] = "student";
+                return false;
+            }
+        
         }
 
         public void CheckIn()
@@ -45,6 +66,11 @@ namespace AbsenceRegistrationService
 
             //Check IP
             CheckIP(ip);
+
+            //Check if the last presence matches with that one
+            UserPresence tmp = pdm.Read(email);
+            if (tmp.GetDate().Hour == DateTime.Now.Hour)
+                throw new Exception("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
 
             //Save to DB
             InitializePresenceDataMapperFromSession();
@@ -59,7 +85,9 @@ namespace AbsenceRegistrationService
         public LinkedList<UserPresence> GetAllUsersHistory()
         {
             //Chech if the user has previously logged-in and if he is a teacher
-            CheckLoggedInAsTeacher();
+            CheckLoggedIn();
+            if (isTeacher == true)
+                throw new Exception("User is not a teacher");
 
             //Read from DB
             InitializePresenceDataMapperFromSession();
@@ -68,17 +96,23 @@ namespace AbsenceRegistrationService
             return history;
         }
 
-        //Maybe it's too similar to CheckLoggedIn, might want to remove the duplicate code.
-        private void CheckLoggedInAsTeacher()
+        public bool GetUserPresent(string email)
         {
-            if (HttpContext.Current.Session["emai"] != null)
-            {
-                email = (string)HttpContext.Current.Session["emai"];
-                if (email.Contains("@edu.eal.dk"))
-                    throw new Exception("User is not a teacher");
-            }
+
+            //Chech if the user has previously logged-in and if he is a teacher
+            CheckLoggedIn();
+            if (isTeacher == true)
+                throw new Exception("User is not a teacher");
+
+            //Read from DB
+            InitializePresenceDataMapperFromSession();
+            UserPresence tmp = pdm.Read(email);
+
+            //Check if the last presence matches with the current time
+            if (tmp.GetDate().Hour == DateTime.Now.Hour)
+                return true;
             else
-                throw new Exception("User not connected");
+                return false;
         }
 
         private string GetClientMac()
@@ -97,10 +131,13 @@ namespace AbsenceRegistrationService
 
         private void CheckLoggedIn()
         {
-            if (HttpContext.Current.Session["emai"] != null)
+            if (HttpContext.Current.Session["emai"] != null && HttpContext.Current.Session["privilege"] != null)
+            {
                 email = (string)HttpContext.Current.Session["emai"];
+                isTeacher = (bool)HttpContext.Current.Session["isTeacher"];
+            }
             else
-                throw new Exception("User not connected");
+                throw new Exception("User not logged in");
         }
         
         //Must move this into another class, there's the risk of this class getting too huge

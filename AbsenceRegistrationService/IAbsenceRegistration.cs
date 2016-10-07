@@ -10,15 +10,18 @@ namespace AbsenceRegistrationService
 
         //Should those passwords already be encrypted by the client?
         [OperationContract]
-        void CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword);
+        bool CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword);
 
         [OperationContract]
-        void LoginUser(string email, string password);
+        bool LoginUser(string email, string password);
 
         [OperationContract]
         void CheckIn();
 
         [OperationContract]
         LinkedList<UserPresence> GetAllUsersHistory();
+
+        [OperationContract]
+        bool GetUserPresent(string email);
     }
 }
