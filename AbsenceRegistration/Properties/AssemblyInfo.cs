@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AbsenceRegistrationClient")]
+[assembly: AssemblyTitle("AbsenceRegistration")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AbsenceRegistrationClient")]
+[assembly: AssemblyProduct("AbsenceRegistration")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a5fabce2-5d01-48a3-9edb-5b52e2d263ab")]
+[assembly: Guid("0cd71079-2490-489e-89a3-56445849360b")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -4,6 +4,7 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:4100/AbsenceRegistration.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:4100/AbsenceRegistration.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:4100/AbsenceRegistration.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/AbsenceRegistrationService" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IAbsenceRegistration_CreateUser_InputMessage">
@@ -24,6 +25,18 @@
   <wsdl:message name="IAbsenceRegistration_CheckIn_OutputMessage">
     <wsdl:part name="parameters" element="tns:CheckInResponse" />
   </wsdl:message>
+  <wsdl:message name="IAbsenceRegistration_GetAllUsersHistory_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUsersHistory" />
+  </wsdl:message>
+  <wsdl:message name="IAbsenceRegistration_GetAllUsersHistory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUsersHistoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAbsenceRegistration_GetUserPresent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserPresent" />
+  </wsdl:message>
+  <wsdl:message name="IAbsenceRegistration_GetUserPresent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserPresentResponse" />
+  </wsdl:message>
   <wsdl:portType name="IAbsenceRegistration">
     <wsdl:operation name="CreateUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IAbsenceRegistration/CreateUser" message="tns:IAbsenceRegistration_CreateUser_InputMessage" />
@@ -36,6 +49,14 @@
     <wsdl:operation name="CheckIn">
       <wsdl:input wsaw:Action="http://tempuri.org/IAbsenceRegistration/CheckIn" message="tns:IAbsenceRegistration_CheckIn_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAbsenceRegistration/CheckInResponse" message="tns:IAbsenceRegistration_CheckIn_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUsersHistory">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAbsenceRegistration/GetAllUsersHistory" message="tns:IAbsenceRegistration_GetAllUsersHistory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAbsenceRegistration/GetAllUsersHistoryResponse" message="tns:IAbsenceRegistration_GetAllUsersHistory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserPresent">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAbsenceRegistration/GetUserPresent" message="tns:IAbsenceRegistration_GetUserPresent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAbsenceRegistration/GetUserPresentResponse" message="tns:IAbsenceRegistration_GetUserPresent_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IAbsenceRegistration" type="tns:IAbsenceRegistration">
@@ -60,6 +81,24 @@
     </wsdl:operation>
     <wsdl:operation name="CheckIn">
       <soap:operation soapAction="http://tempuri.org/IAbsenceRegistration/CheckIn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUsersHistory">
+      <soap:operation soapAction="http://tempuri.org/IAbsenceRegistration/GetAllUsersHistory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserPresent">
+      <soap:operation soapAction="http://tempuri.org/IAbsenceRegistration/GetUserPresent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

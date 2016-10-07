@@ -62,10 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AbsenceRegistrationClient\AbsenceRegistrationClient.csproj">
-      <Project>{8f73e2c3-5f8b-4ab5-848d-2a9ce3a69fbb}</Project>
-      <Name>AbsenceRegistrationClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AbsenceRegistrationService\AbsenceRegistrationService.csproj">
       <Project>{5a8aa472-f0d0-408a-8130-0d3b8f507f08}</Project>
       <Name>AbsenceRegistrationService</Name>
