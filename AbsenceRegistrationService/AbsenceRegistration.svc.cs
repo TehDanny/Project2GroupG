@@ -46,6 +46,11 @@ namespace AbsenceRegistrationService
             //Check IP
             CheckIP(ip);
 
+            //Check if the last presence matches with that one
+            UserPresence tmp = pdm.Read(email);
+            if (tmp.GetDate().Hour == DateTime.Now.Hour)
+                throw new Exception("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
+
             //Save to DB
             InitializePresenceDataMapperFromSession();
             
