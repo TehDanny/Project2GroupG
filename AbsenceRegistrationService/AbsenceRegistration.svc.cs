@@ -20,6 +20,8 @@ namespace AbsenceRegistrationService
 
         MsSqlPresenceDataMapper pdm;
         string email;
+        //Is the user a student or a teacher?
+        string privilege;
 
         public void CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
@@ -33,6 +35,10 @@ namespace AbsenceRegistrationService
             InitializeLoginFromSession();
             l.LoginUser(email, password);
             HttpContext.Current.Session["email"] = email;
+            if (email.Contains("@edu.eal.dk"))
+                HttpContext.Current.Session["privilege"] = "student";
+            else
+                HttpContext.Current.Session["privilege"] = "teacher";
         }
 
         public void CheckIn()
@@ -64,7 +70,9 @@ namespace AbsenceRegistrationService
         public LinkedList<UserPresence> GetAllUsersHistory()
         {
             //Chech if the user has previously logged-in and if he is a teacher
-            CheckLoggedInAsTeacher();
+            CheckLoggedIn();
+            if (privilege != "teacher")
+                throw new Exception("User is not a teacher");
 
             //Read from DB
             InitializePresenceDataMapperFromSession();
@@ -77,7 +85,9 @@ namespace AbsenceRegistrationService
         {
 
             //Chech if the user has previously logged-in and if he is a teacher
-            CheckLoggedInAsTeacher();
+            CheckLoggedIn();
+            if (privilege != "teacher")
+                throw new Exception("User is not a teacher");
 
             //Read from DB
             InitializePresenceDataMapperFromSession();
@@ -88,19 +98,6 @@ namespace AbsenceRegistrationService
                 return true;
             else
                 return false;
-        }
-
-        //Maybe it's too similar to CheckLoggedIn, might want to remove the duplicate code.
-        private void CheckLoggedInAsTeacher()
-        {
-            if (HttpContext.Current.Session["emai"] != null)
-            {
-                email = (string)HttpContext.Current.Session["emai"];
-                if (email.Contains("@edu.eal.dk"))
-                    throw new Exception("User is not a teacher");
-            }
-            else
-                throw new Exception("User not connected");
         }
 
         private string GetClientMac()
@@ -119,8 +116,11 @@ namespace AbsenceRegistrationService
 
         private void CheckLoggedIn()
         {
-            if (HttpContext.Current.Session["emai"] != null)
+            if (HttpContext.Current.Session["emai"] != null && HttpContext.Current.Session["privilege"] != null)
+            {
                 email = (string)HttpContext.Current.Session["emai"];
+                privilege = (string)HttpContext.Current.Session["privilege"];
+            }
             else
                 throw new Exception("User not connected");
         }
