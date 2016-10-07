@@ -63,7 +63,7 @@ namespace AbsenceRegistrationService
             get
             {
                 if (HttpContext.Current.Session["email"] == null)
-                    throw new Exception("User not logged in");
+                    throw new FaultException("User not logged in");
                 return (string)HttpContext.Current.Session["email"];
             }
             set
@@ -77,7 +77,7 @@ namespace AbsenceRegistrationService
             get
             {
                 if (HttpContext.Current.Session["isTeacher"] == null)
-                    throw new Exception("User not logged in");
+                    throw new FaultException("User not logged in");
                 return (bool)HttpContext.Current.Session["isTeacher"];
             }
             set
@@ -125,13 +125,13 @@ namespace AbsenceRegistrationService
             //We take the IP address
             string ip = GetClientIP();
 
-            //Check IP
+            //Check IP            
             CheckIP(ip);
-
+            
             //Check if the last presence matches with that one
             UserPresence tmp = pdm.Read(email);
             if (tmp.GetDate().Hour == DateTime.Now.Hour)
-                throw new Exception("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
+                throw new FaultException("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
 
             //Save to DB
             InitializePresenceDataMapperFromSession();
@@ -140,7 +140,7 @@ namespace AbsenceRegistrationService
             UserPresence up = new UserPresence(DateTime.Now, email, mac, ip);
             
             pdm.Create(up);
-
+            
         }
 
         public LinkedList<UserPresence> GetAllUsersHistory()
@@ -148,7 +148,7 @@ namespace AbsenceRegistrationService
             //Chech if the user has previously logged-in and if he is a teacher
             CheckLoggedIn();
             if (isTeacher == true)
-                throw new Exception("User is not a teacher");
+                throw new FaultException("User is not a teacher");
 
             //Read from DB
             InitializePresenceDataMapperFromSession();
@@ -163,7 +163,7 @@ namespace AbsenceRegistrationService
             //Chech if the user has previously logged-in and if he is a teacher
             CheckLoggedIn();
             if (isTeacher == true)
-                throw new Exception("User is not a teacher");
+                throw new FaultException("User is not a teacher");
 
             //Read from DB
             InitializePresenceDataMapperFromSession();
@@ -185,7 +185,7 @@ namespace AbsenceRegistrationService
         private void CheckIP(string ip)
         {
             if (!ip.StartsWith("10"))
-                throw new Exception("IP outside eal");
+                throw new FaultException("IP outside eal");
 
             //Subnet mask of EAL: 255.255.240.0
         }
@@ -198,7 +198,7 @@ namespace AbsenceRegistrationService
                 isTeacher = (bool)HttpContext.Current.Session["isTeacher"];
             }
             else
-                throw new Exception("User not logged in");
+                throw new FaultException("User not logged in");
         }
         
         //Must move this into another class, there's the risk of this class getting too huge
