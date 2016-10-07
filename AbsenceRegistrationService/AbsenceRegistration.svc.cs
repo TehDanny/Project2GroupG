@@ -23,22 +23,44 @@ namespace AbsenceRegistrationService
         //Is the user a student or a teacher?
         string privilege;
 
-        public void CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
+        /// <summary>
+        /// Creates and logs the user in
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="fisrtname"></param>
+        /// <param name="surname"></param>
+        /// <param name="password"></param>
+        /// <param name="confirmPassword"></param>
+        /// <returns>True if teacher, false if student</returns>
+        public bool CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
             InitializeLoginFromSession();
             l.CreateUser(email, fisrtname, surname, password, confirmPassword);
-            LoginUser(email, password);
+            return LoginUser(email, password);
         }
 
-        public void LoginUser(string email, string password)
+        /// <summary>
+        /// Logs the user in
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>True if teacher, false if student</returns>
+        public bool LoginUser(string email, string password)
         {
             InitializeLoginFromSession();
             l.LoginUser(email, password);
             HttpContext.Current.Session["email"] = email;
-            if (email.Contains("@edu.eal.dk"))
-                HttpContext.Current.Session["privilege"] = "student";
-            else
+            if (email.Contains("@eal.dk"))
+            {
                 HttpContext.Current.Session["privilege"] = "teacher";
+                return true;
+            }
+            else
+            {
+                HttpContext.Current.Session["privilege"] = "student";
+                return false;
+            }
+        
         }
 
         public void CheckIn()
@@ -122,7 +144,7 @@ namespace AbsenceRegistrationService
                 privilege = (string)HttpContext.Current.Session["privilege"];
             }
             else
-                throw new Exception("User not connected");
+                throw new Exception("User not logged in");
         }
         
         //Must move this into another class, there's the risk of this class getting too huge
