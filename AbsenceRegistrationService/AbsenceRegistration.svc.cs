@@ -15,13 +15,76 @@ namespace AbsenceRegistrationService
     public class AbsenceRegistration : IAbsenceRegistration
     {
 
-        MsSqlLoginDataMapper ldm;
-        Login l;
+        MsSqlLoginDataMapper ldm
+        {
+            get
+            {
+                if (HttpContext.Current.Session["ldm"] == null)
+                    HttpContext.Current.Session["ldm"] = new MsSqlLoginDataMapper();
+                return (MsSqlLoginDataMapper)HttpContext.Current.Session["ldm"];
+            }
+            set
+            {
+                HttpContext.Current.Session["ldm"] = value;
+            }
+        }
 
-        MsSqlPresenceDataMapper pdm;
-        string email;
+        Login l
+        {
+            get
+            {
+                if (HttpContext.Current.Session["l"] == null)
+                    HttpContext.Current.Session["l"] = new Login(ldm);
+                return (Login)HttpContext.Current.Session["l"];
+            }
+            set
+            {
+                HttpContext.Current.Session["l"] = value;
+            }
+        }
+
+
+        MsSqlPresenceDataMapper pdm
+        { 
+            get
+            {
+                if (HttpContext.Current.Session["pdm"] == null)
+                    HttpContext.Current.Session["pdm"] = new MsSqlPresenceDataMapper();
+                return (MsSqlPresenceDataMapper)HttpContext.Current.Session["pdm"];
+            }
+            set
+            {
+                HttpContext.Current.Session["pdm"] = value;                
+            }
+        }
+
+        string email
+        {
+            get
+            {
+                if (HttpContext.Current.Session["email"] == null)
+                    throw new Exception("User not logged in");
+                return (string)HttpContext.Current.Session["email"];
+            }
+            set
+            {
+                HttpContext.Current.Session["email"] = value;
+            }
+        }
         //True if teacher, false if student
-        bool isTeacher;
+        bool isTeacher
+        {
+            get
+            {
+                if (HttpContext.Current.Session["isTeacher"] == null)
+                    throw new Exception("User not logged in");
+                return (bool)HttpContext.Current.Session["isTeacher"];
+            }
+            set
+            {
+                HttpContext.Current.Session["isTeacher"] = value;
+            }
+        }
 
         /// <summary>
         /// Creates and logs the user in
@@ -29,7 +92,6 @@ namespace AbsenceRegistrationService
         /// <returns>True if teacher, false if student</returns>
         public bool CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
-            InitializeLoginFromSession();
             l.CreateUser(email, fisrtname, surname, password, confirmPassword);
             return LoginUser(email, password);
         }
@@ -40,18 +102,17 @@ namespace AbsenceRegistrationService
         /// <returns>True if teacher, false if student</returns>
         public bool LoginUser(string email, string password)
         {
-            InitializeLoginFromSession();
             l.LoginUser(email, password);
-            HttpContext.Current.Session["email"] = email;
-            if (email.Contains("@eal.dk"))
+            this.email = email;
+            if (this.email.Contains("@eal.dk"))
             {
-                HttpContext.Current.Session["isTeacher"] = true;
-                return true;
+                isTeacher = true;
+                return isTeacher;
             }
             else
             {
-                HttpContext.Current.Session["privilege"] = "student";
-                return false;
+                isTeacher = false;
+                return isTeacher;
             }
         
         }
