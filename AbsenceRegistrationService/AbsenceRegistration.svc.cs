@@ -131,9 +131,9 @@ namespace AbsenceRegistrationService
 
         private void CheckLoggedIn()
         {
-            if (HttpContext.Current.Session["emai"] != null && HttpContext.Current.Session["privilege"] != null)
+            if (HttpContext.Current.Session["email"] != null && HttpContext.Current.Session["isTeacher"] != null)
             {
-                email = (string)HttpContext.Current.Session["emai"];
+                email = (string)HttpContext.Current.Session["email"];
                 isTeacher = (bool)HttpContext.Current.Session["isTeacher"];
             }
             else

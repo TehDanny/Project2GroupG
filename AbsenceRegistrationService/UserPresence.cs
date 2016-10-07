@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace AbsenceRegistrationService
 {
+    [DataContract]
     public class UserPresence
     {
+        [DataMember]
         private string email;
+        [DataMember]
         private string mac, ip;
+        [DataMember]
         private DateTime dt;
 
         public UserPresence(DateTime dt, string email, string mac, string ip)
