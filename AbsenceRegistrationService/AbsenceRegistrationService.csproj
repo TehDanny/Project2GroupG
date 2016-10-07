@@ -138,10 +138,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AbsenceRegistrationClient\AbsenceRegistrationClient.csproj">
-      <Project>{8f73e2c3-5f8b-4ab5-848d-2a9ce3a69fbb}</Project>
-      <Name>AbsenceRegistrationClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ManageDb\ManageDb.csproj">
       <Project>{596250a1-7261-46a7-9c5a-2cbbc34f7ae6}</Project>
       <Name>ManageDb</Name>
