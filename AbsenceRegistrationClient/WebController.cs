@@ -8,11 +8,12 @@ using AbsenceRegistrationClient.AbsenceRegistrationService;
 
 namespace AbsenceRegistrationClient {
     class WebController {
+        //References
         private View view = new View();
         private AbsenceRegistrationService.AbsenceRegistrationClient client = new AbsenceRegistrationService.AbsenceRegistrationClient();
-        private bool isTeacher;
         private Thread autoCheckIn;
-        private List<DateTime> registrationList = new List<DateTime>();
+        //Properties
+        private bool isTeacher;
         private static void autoCheckInCaller() {
             WebController nonStatic = new WebController();
             nonStatic.autoCheckInMethod();
@@ -21,10 +22,11 @@ namespace AbsenceRegistrationClient {
         /// Automatcally calls the check-in method every hour from 8 to 14.
         /// </summary>
         private void autoCheckInMethod() {
+            List<DateTime> registrationList = new List<DateTime>();
             int lastHour = 7;
             Thread.Sleep(10000);
             if (DateTime.Now.Hour != lastHour) {
-                client.CheckIn();
+                checkIn();
                 lastHour = DateTime.Now.Hour;
                 registrationList.Add(DateTime.Now);
             }
@@ -37,32 +39,66 @@ namespace AbsenceRegistrationClient {
         private void run() {
             login();
             autoCheckIn = new Thread(new ThreadStart(autoCheckInMethod));
-            menu();
+            while (menu());
         }
         private void login() {
             string[] credentials = view.Login().Split(';');
-            isTeacher = client.LoginUser(credentials[0], credentials[1]);
-            
+            bool tryAgain = true;
+            while (tryAgain) { 
+                try {
+                    isTeacher = client.LoginUser(credentials[0], credentials[1]);
+                    tryAgain = false;
+                } catch (Exception e) {
+                    view.PrintErrorMessage(e.Message);
+                    view.ClearScreen(0);
+                }
+            }
         }
-        private void menu() {
+        private bool menu() {
             if (isTeacher) {
                 view.PrintTeacherMenu();
                 switch (view.GetCommand()) {
                     case View.Command.CheckIn:
-
+                        checkIn();
                         break;
                     case View.Command.History:
                         break;
                     case View.Command.Current:
                         break;
+                    case View.Command.Quit:
+                        view.PrintMessage(View.Message.ByeBye);
+                        view.ClearScreen(5000);
+                        return false;
                 };
             }
             else {
                 view.PrintStudentMenu();
-                if (view.GetCommand() == View.Command.CheckIn) {
-
-                } else view.PrintMessage(View.Message.NoPrivilige);
+                switch (view.GetCommand()) {
+                    case View.Command.CheckIn:
+                        checkIn();
+                        break;
+                    case View.Command.Quit:
+                        view.PrintMessage(View.Message.ByeBye);
+                        view.ClearScreen(3000);
+                        return false;
+                    default:
+                        view.PrintMessage(View.Message.NoPrivilige);
+                        break;
+                }
             }
+            return true;
         }
+        private void checkIn(){
+            try {
+                client.CheckIn();
+            } catch (Exception e) {
+                view.PrintErrorMessage(e.Message);
+                view.ClearScreen(0);
+                return;
+            }
+            view.PrintMessage(View.Message.SuccessfulCheckIn);
+            view.ClearScreen(6000);
+        }
+
     }
 }
