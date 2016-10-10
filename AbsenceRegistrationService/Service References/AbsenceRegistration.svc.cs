@@ -104,6 +104,8 @@ namespace AbsenceRegistrationService
         {
             l.LoginUser(email, password);
             this.email = email;
+            //Keeps the session for 120 minutes, so the user doesn't have to log in every time
+            HttpContext.Current.Session.Timeout = 120;
             if (this.email.Contains("@eal.dk"))
             {
                 isTeacher = true;
