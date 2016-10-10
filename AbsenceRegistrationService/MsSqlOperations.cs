@@ -72,7 +72,13 @@ namespace AbsenceRegistrationService
             base.Disconnect();
             return indexes;
         }
-
+        protected void rightInput(string s)
+        {
+            if(s.Contains("\"")||s.Contains("!") || s.Contains("=") || s.Contains("%") || s.Contains("&") || s.Contains("?") || s.Contains(";") || s.Contains(",") || s.Contains("*") || s.Contains(",") || s.Contains("--"))
+            {
+                throw new SqlInjectionException();
+            }
+        }
         
         protected int LastIndexAutenticationTable()
         {
