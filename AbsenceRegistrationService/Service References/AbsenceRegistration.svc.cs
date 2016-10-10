@@ -5,6 +5,7 @@ using Login_Component;
 using System.Web;
 using System.ServiceModel.Channels;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace AbsenceRegistrationService
 {
@@ -104,6 +105,9 @@ namespace AbsenceRegistrationService
         {
             l.LoginUser(email, password);
             this.email = email;
+            //Keeps the session for 120 minutes, so the user doesn't have to log in every time
+            HttpContext.Current.Session.Timeout = 120;
+
             if (this.email.Contains("@eal.dk"))
             {
                 isTeacher = true;
@@ -166,7 +170,6 @@ namespace AbsenceRegistrationService
                 throw new FaultException("User is not a teacher");
 
             //Read from DB
-            InitializePresenceDataMapperFromSession();
             UserPresence tmp = pdm.Read(email);
 
             //Check if the last presence matches with the current time
@@ -185,7 +188,7 @@ namespace AbsenceRegistrationService
         private void CheckIP(string ip)
         {
             if (!ip.StartsWith("10"))
-                throw new FaultException("IP outside eal");
+                throw new FaultException("IP outside eal. IP="+ip);
 
             //Subnet mask of EAL: 255.255.240.0
         }
@@ -204,16 +207,7 @@ namespace AbsenceRegistrationService
         //Must move this into another class, there's the risk of this class getting too huge
         string GetClientIP()
         {
-            //THE IP IS NOT CORRECT SO FAR
-            //So far copy-pasted code, hopefully we'll make sense of it by looking at the documentation.
-            MessageProperties incomingMessageProperties = OperationContext.Current.IncomingMessageProperties;
-
-            RemoteEndpointMessageProperty remoteEndpointMessageProperty = incomingMessageProperties[RemoteEndpointMessageProperty.Name]
-                as RemoteEndpointMessageProperty;
-            
-            string ip = remoteEndpointMessageProperty.Address;
-
-            return ip;
+            return HttpContext.Current.Request.UserHostAddress;
         }
 
         //TODO: find a better name, eventually

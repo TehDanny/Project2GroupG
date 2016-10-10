@@ -113,13 +113,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AbsenceRegistration.svc" />
+    <Content Include="Service References\AbsenceRegistration.svc" />
     <Content Include="scripts\ai.0.22.19-build00125.js" />
     <Content Include="scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbsenceRegistration.svc.cs">
+    <Compile Include="Service References\AbsenceRegistration.svc.cs">
       <DependentUpon>AbsenceRegistration.svc</DependentUpon>
     </Compile>
     <Compile Include="IAbsenceRegistration.cs" />
