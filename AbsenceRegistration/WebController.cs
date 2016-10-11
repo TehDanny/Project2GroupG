@@ -135,9 +135,10 @@ namespace AbsenceRegistrationClient {
             Tuple<string, int> refTL = new Tuple<string, int>("",0);
             for (var date = start.Date; date <= end.Date; date.AddDays(1)) {
                 dayName = date.DayOfWeek.ToString();
+                emails = new List<string>();
                 foreach(UserPresence historyItem in history) {
                     if (historyItem.dt.Date == date) {
-                        emails.Add(historyItem.email);
+                        if (!emails.Contains(historyItem.email)) emails.Add(historyItem.email);
                         bool found = false;
                         foreach(var topListItem in topList) {
                             if (topListItem.Item1 == historyItem.email) {

@@ -90,8 +90,7 @@ namespace AbsenceRegistrationClient {
                 case Message.SuccessfulCheckIn: Console.WriteLine("Check-in was successful!"); break;
                 case Message.WrongInput: Console.WriteLine("Wrong input. Try again!"); break;
             }
-            Console.ReadKey();
-            Console.Clear();
+            ClearScreen();
         }
         public enum Command {
             Login,
@@ -117,6 +116,7 @@ namespace AbsenceRegistrationClient {
         }
         public void PrintErrorMessage(string errorMessage) {
             Console.WriteLine(errorMessage);
+            ClearScreen();
         }
         public void ClearScreen() {
             Console.ReadKey();
