@@ -19,6 +19,11 @@ namespace AbsenceRegistrationService
         {
             lock (MsSqlLoginDataMapper.thisLock)
             {
+                base.rightInput(obj.GetEmail());
+                base.rightInput(obj.GetEncryptedPassword());
+                base.rightInput(obj.GetName());
+                base.rightInput(obj.GetSurname());
+                base.rightInput(obj.GetUserType());
                 this.setParameters(obj);
                 string sqlCommandString = "INSERT INTO  Project2GroupGUserTable VALUES(" + this.email + "," + this.encryptedPassword + ", " + this.name + "," + this.surname + ", " + this.type + ");";
                 base.DoVoidCommand(sqlCommandString);
@@ -28,6 +33,7 @@ namespace AbsenceRegistrationService
         {
             lock (MsSqlLoginDataMapper.thisLock)
             {
+                base.rightInput(key);
                 this.setParameters(new Login_Component.User(key, "", null, null, null));
                 string sqlCommandString = "DELETE FROM  Project2GroupGUserTable WHERE email=" + this.email + ";";
                 base.DoVoidCommand(sqlCommandString);
@@ -35,6 +41,7 @@ namespace AbsenceRegistrationService
         }
         public Login_Component.User Read(string key)
         {
+            base.rightInput(key);
             this.setParameters(new Login_Component.User(key, "", null, null, null));
             string sqlCommandString = "select email,encryptedpassword,name,surname,type from Project2GroupGUserTable where email=" + this.email + "";
             return base.ReadUser(sqlCommandString);
@@ -43,6 +50,11 @@ namespace AbsenceRegistrationService
         {
             lock (MsSqlLoginDataMapper.thisLock)
             {
+                base.rightInput(obj.GetEmail());
+                base.rightInput(obj.GetEncryptedPassword());
+                base.rightInput(obj.GetName());
+                base.rightInput(obj.GetSurname());
+                base.rightInput(obj.GetUserType());
                 this.setParameters(obj);
                 string sqlCommandString = "UPDATE Project2GroupGUserTable SET email=" + this.email + ",encryptedpassword=" + this.encryptedPassword + ",name=" + this.name + ",surname=" + this.surname + ",type=" + this.type + " WHERE email=" + this.email + ";";
                 base.DoVoidCommand(sqlCommandString);
