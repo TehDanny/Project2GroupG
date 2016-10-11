@@ -48,8 +48,6 @@ namespace AbsenceRegistrationClient {
             userInfo += ";" + Console.ReadLine();
             Console.Write("Surname: ");
             userInfo += ";" + Console.ReadLine();
-            Console.Write("Email: ");
-            userInfo += ";" + Console.ReadLine();
             Console.Write("Password: ");
             userInfo += ";" + Console.ReadLine();
             Console.Write("Confirm password: ");
