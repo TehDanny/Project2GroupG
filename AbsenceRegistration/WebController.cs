@@ -27,6 +27,7 @@ namespace AbsenceRegistrationClient {
             int lastHour = 7;
             Thread.Sleep(10000);
             if (DateTime.Now.Hour != lastHour) {
+                view.PrintMessage(View.Message.TryAutoCheckIn);
                 checkIn();
                 lastHour = DateTime.Now.Hour;
                 registrationList.Add(DateTime.Now);

@@ -71,6 +71,7 @@ namespace AbsenceRegistrationClient {
             Disclaimer,
             NoPrivilige,
             WrongInput,
+            TryAutoCheckIn,
             SuccessfulCheckIn,
             ByeBye
         }
@@ -84,13 +85,30 @@ namespace AbsenceRegistrationClient {
                     Console.WriteLine("DISCLAIMER: This program checks and sends your MAC/IP address to the server.");
                     Console.WriteLine("Only with the purpose of checking your location,");
                     Console.WriteLine("therefore approving the legitimacy of your actions.");
+                    System.Threading.Thread.Sleep(2000);
+                    Console.WriteLine();
                     break;
-                case Message.NoPrivilige: Console.WriteLine("You have no privilige to pick a teacher's feature.!"); break;
-                case Message.ByeBye: Console.WriteLine("Quitting the program..."); break;
-                case Message.SuccessfulCheckIn: Console.WriteLine("Check-in was successful!"); break;
-                case Message.WrongInput: Console.WriteLine("Wrong input. Try again!"); break;
+                case Message.NoPrivilige:
+                    Console.WriteLine("You have no privilige to pick a teacher's feature.!");
+                    ClearScreen();
+                    break;
+                case Message.TryAutoCheckIn:
+                    Console.WriteLine("Attempting to do an auto check-in...");
+                    ClearScreen();
+                    break;
+                case Message.SuccessfulCheckIn:
+                    Console.WriteLine("Check-in was successful!");
+                    ClearScreen();
+                    break;
+                case Message.WrongInput:
+                    Console.WriteLine("Wrong input. Try again!");
+                    ClearScreen();
+                    break;
+                case Message.ByeBye:
+                    Console.WriteLine("Quitting the program...");
+                    ClearScreen();
+                    break;
             }
-            ClearScreen();
         }
         public enum Command {
             Login,
@@ -119,6 +137,7 @@ namespace AbsenceRegistrationClient {
             ClearScreen();
         }
         public void ClearScreen() {
+            Console.WriteLine("Press a key to continue.");
             Console.ReadKey();
             Console.Clear();
         }
