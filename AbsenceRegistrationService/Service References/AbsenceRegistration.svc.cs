@@ -123,9 +123,6 @@ namespace AbsenceRegistrationService
 
         public void CheckIn()
         {
-            //Check if the user has previously logged-in
-            CheckLoggedIn();
-
             //We take the IP address
             string ip = GetClientIP();
 
@@ -137,9 +134,7 @@ namespace AbsenceRegistrationService
             if (tmp.GetDate().Hour == DateTime.Now.Hour)
                 throw new FaultException("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
 
-            //Save to DB
-            InitializePresenceDataMapperFromSession();
-            
+            //Save to DB            
             string mac = GetClientMac();
             UserPresence up = new UserPresence(DateTime.Now, email, mac, ip);
             
@@ -149,13 +144,11 @@ namespace AbsenceRegistrationService
 
         public LinkedList<UserPresence> GetAllUsersHistory()
         {
-            //Chech if the user has previously logged-in and if he is a teacher
-            CheckLoggedIn();
-            if (isTeacher == true)
+            //Chech if the user has previously logged-in as a teacher
+            if (isTeacher == false)
                 throw new FaultException("User is not a teacher");
 
             //Read from DB
-            InitializePresenceDataMapperFromSession();
             LinkedList<UserPresence> history = pdm.ReadAllUsersHistory();
 
             return history;
@@ -163,10 +156,8 @@ namespace AbsenceRegistrationService
 
         public bool GetUserPresent(string email)
         {
-
-            //Chech if the user has previously logged-in and if he is a teacher
-            CheckLoggedIn();
-            if (isTeacher == true)
+            //Chech if the user has previously logged-in as a teacher
+            if (isTeacher == false)
                 throw new FaultException("User is not a teacher");
 
             //Read from DB
@@ -192,52 +183,11 @@ namespace AbsenceRegistrationService
 
             //Subnet mask of EAL: 255.255.240.0
         }
-
-        private void CheckLoggedIn()
-        {
-            if (HttpContext.Current.Session["email"] != null && HttpContext.Current.Session["isTeacher"] != null)
-            {
-                email = (string)HttpContext.Current.Session["email"];
-                isTeacher = (bool)HttpContext.Current.Session["isTeacher"];
-            }
-            else
-                throw new FaultException("User not logged in");
-        }
         
         //Must move this into another class, there's the risk of this class getting too huge
         string GetClientIP()
         {
             return HttpContext.Current.Request.UserHostAddress;
-        }
-
-        //TODO: find a better name, eventually
-        //Might do: create a more generic method for that that takes in some parameters,
-        //so we can only have one of those instead of 2 (or probably even more in the future)
-        private void InitializeLoginFromSession()
-        {
-            if (HttpContext.Current.Session["ldm"] == null)
-            {
-                ldm = new MsSqlLoginDataMapper();
-                l = new Login(ldm);
-                HttpContext.Current.Session["ldm"] = ldm;
-                HttpContext.Current.Session["l"] = l;
-            }
-            else
-            {
-                ldm = (MsSqlLoginDataMapper)HttpContext.Current.Session["ldm"];
-                l = (Login)HttpContext.Current.Session["l"];
-            }
-        }
-
-        private void InitializePresenceDataMapperFromSession()
-        {
-            if (HttpContext.Current.Session["pdm"] == null)
-            {
-                pdm = new MsSqlPresenceDataMapper();
-                HttpContext.Current.Session["pdm"] = pdm;
-            }
-            else
-                pdm = (MsSqlPresenceDataMapper) HttpContext.Current.Session["pdm"];
         }
 
     }
