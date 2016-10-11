@@ -74,7 +74,7 @@ namespace AbsenceRegistrationService
         }
         protected void rightInput(string s)
         {
-            if(s.Contains("\"")||s.Contains("!") || s.Contains("=") || s.Contains("%") || s.Contains("&") || s.Contains("?") || s.Contains(";") || s.Contains(",") || s.Contains("*") || s.Contains(",") || s.Contains("--"))
+            if (s.Contains("\"")||s.Contains("!") || s.Contains("=") || s.Contains("%") || s.Contains("&") || s.Contains("?") || s.Contains(";") || s.Contains(",")|| s.Contains("*") || s.Contains("--"))
             {
                 throw new SqlInjectionException();
             }

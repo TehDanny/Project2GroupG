@@ -16,7 +16,7 @@ namespace TestDb
         private string email;
         private int lastEmailNumber()
         {
-            string sqlCommandString = "select email FROM Project2GroupGUserTable where email LIKE " + "'ferocemarcello@gmail.com%' ORDER BY email desc;" + "";
+            string sqlCommandString = "select email FROM Project2GroupGUserTable where email LIKE " + "'ferocemarcello@edu.eal.dk%' ORDER BY email desc;" + "";
             SqlDataReader reader;
             SqlConnection dbconn = new SqlConnection("Data Source = 10.140.12.14"/*ealdb1.eal.local*/+ ";Initial Catalog=EAL5_DB;Persist Security Info=true;User ID=EAL5_USR;Password=Huff05e05");
             dbconn.Open();
@@ -29,7 +29,7 @@ namespace TestDb
             while (reader.Read())
             {
                 email = (string)reader["email"];
-                int index = "ferocemarcello@gmail.com".Length;
+                int index = "ferocemarcello@edu.eal.dk".Length;
                 string n = email.Substring(index);
                 l.Add(int.Parse(n));
             }
@@ -42,7 +42,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456","student");
             try
             {
@@ -57,7 +57,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber()+1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber()+1);
             UserPresence up = new UserPresence(DateTime.Now, email, "12345678901234567","123456789012345");
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce","123456","student");
             try
@@ -74,14 +74,14 @@ namespace TestDb
         [TestMethod]
         public void ReadAllUsersHistoryOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             ldm.Create(u);
             LinkedList<UserPresence> upl = new LinkedList<UserPresence>();
             DateTime dt = DateTime.Now;
             UserPresence up = new UserPresence(dt, u.GetEmail(), "lnn", "jln");
             pdm.Create(up);
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             ldm.Create(u);
             UserPresence up2 = new UserPresence(dt, u.GetEmail(), "lnn", "jln");
@@ -91,7 +91,7 @@ namespace TestDb
                 upl=pdm.ReadAllUsersHistory();
                 Assert.IsTrue(true);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Assert.IsTrue(false);
             }
@@ -99,7 +99,7 @@ namespace TestDb
         [TestMethod]
         public void ReadOneUserHistoryOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             ldm.Create(u);
             LinkedList<UserPresence> upl = new LinkedList<UserPresence>();
@@ -120,7 +120,7 @@ namespace TestDb
                 }
                 Assert.IsTrue(correct);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Assert.IsTrue(false);
             }
@@ -129,7 +129,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceTooLongMac()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             string pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string pathDownload = Path.Combine(pathUser, "Downloads");
             UserPresence up = new UserPresence(DateTime.Now, email, "123456789012345678", "123456789012345");
@@ -148,7 +148,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceNullNotNullableValuesOk()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(null,null, null,null, null);
             try
             {
@@ -163,7 +163,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceNullValuesOk()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, null, null, "123456", null);
             try
             {
@@ -178,7 +178,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserNullNotNullableValues()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             string pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string pathDownload = Path.Combine(pathUser, "Downloads");
             UserPresence up = new UserPresence(DateTime.Now, email, "123456789012345678", "123456789012345");
@@ -197,7 +197,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceNullNotNullableValues()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             string pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string pathDownload = Path.Combine(pathUser, "Downloads");
             UserPresence up = new UserPresence(default(DateTime), null,null, null);
@@ -216,7 +216,7 @@ namespace TestDb
         [TestMethod]
         public void CreateUserPresenceTooLongIp()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             UserPresence up = new UserPresence(DateTime.Now, email, "12345678901234567", "1234567890123456");
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456","student");
             try
@@ -233,7 +233,7 @@ namespace TestDb
         [TestMethod]
         public void ReadUserOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456","teacher");
             Login_Component.User secondU;
             try
@@ -250,7 +250,7 @@ namespace TestDb
         [TestMethod]
         public void ReadNotExistingUser()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u;
             try
             {
@@ -291,7 +291,7 @@ namespace TestDb
         [TestMethod]
         public void ReadNotExistingUserPresence()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u= new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             try
             {
@@ -307,7 +307,7 @@ namespace TestDb
         [TestMethod]
         public void ReadPresenceOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "teacher");
             UserPresence up = new UserPresence(DateTime.Now,email,"12345678901234567","123456789012345");
             UserPresence up2;
@@ -326,7 +326,7 @@ namespace TestDb
         [TestMethod]
         public void DeleteUserOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             try
             {
@@ -343,7 +343,7 @@ namespace TestDb
         [TestMethod]
         public void DeleteNotExistingUser()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             try
             {
                 ldm.Delete(email);
@@ -384,7 +384,7 @@ namespace TestDb
         [TestMethod]
         public void DeleteNotExistingUserPresence()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             try
             {
                 pdm.Delete(email);
@@ -399,7 +399,7 @@ namespace TestDb
         [TestMethod]
         public void DeleteUserPresenceOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             UserPresence up = new UserPresence(DateTime.Now, email, "12345678901234567", "123456789012345");
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             try
@@ -419,7 +419,7 @@ namespace TestDb
         [TestMethod]
         public void UpdateUserOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             Login_Component.User u2 = new Login_Component.User(email, "marcell", "feroc", "1234567", null);
             try
@@ -436,7 +436,7 @@ namespace TestDb
         [TestMethod]
         public void UpdateNullUser()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             Login_Component.User u2 = new Login_Component.User(null, "marcell", "feroc", "1234567", null);
             try
@@ -453,25 +453,25 @@ namespace TestDb
         [TestMethod]
         public void UpdateNotExistingUser()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             try
             {
                 ldm.Create(u);
-                email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
-                Login_Component.User u2 = new Login_Component.User(email, "marcell", "feroc", "1234567", "lqeff!");
+                email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
+                Login_Component.User u2 = new Login_Component.User(email, "marcell", "feroc", "1234567", "lqeff");
                 ldm.Update(u2);
-                Assert.IsTrue(true);
+                Assert.IsTrue(false);
             }
             catch (Exception)
             {
-                Assert.IsTrue(false);
+                Assert.IsTrue(true);
             }
         }
         [TestMethod]
         public void UpdateNotExistingUserPresence()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             UserPresence up = new UserPresence(default(DateTime), email, "", "");
             try
             {
@@ -486,7 +486,7 @@ namespace TestDb
         [TestMethod]
         public void UpdateUserPresenceOK()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             UserPresence up = new UserPresence(DateTime.Now, email, "123456789", "12345456");
             
@@ -506,7 +506,7 @@ namespace TestDb
         [TestMethod]
         public void UpdateNullUserPresence()
         {
-            email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
             UserPresence up = new UserPresence(DateTime.Now, email, "123456789", "12345456");
 

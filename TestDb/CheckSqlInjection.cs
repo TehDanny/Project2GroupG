@@ -13,7 +13,7 @@ namespace TestDb
         private MsSqlLoginDataMapper ldm = new MsSqlLoginDataMapper();
         private int lastEmailNumber()
         {
-            string sqlCommandString = "select email FROM Project2GroupGUserTable where email LIKE " + "'ferocemarcello@gmail.com%' ORDER BY email desc;" + "";
+            string sqlCommandString = "select email FROM Project2GroupGUserTable where email LIKE " + "'ferocemarcello@edu.eal.dk%' ORDER BY email desc;" + "";
             SqlDataReader reader;
             SqlConnection dbconn = new SqlConnection("Data Source = 10.140.12.14"/*ealdb1.eal.local*/+ ";Initial Catalog=EAL5_DB;Persist Security Info=true;User ID=EAL5_USR;Password=Huff05e05");
             dbconn.Open();
@@ -26,7 +26,7 @@ namespace TestDb
             while (reader.Read())
             {
                 email = (string)reader["email"];
-                int index = "ferocemarcello@gmail.com".Length;
+                int index = "ferocemarcello@edu.eal.dk".Length;
                 string n = email.Substring(index);
                 l.Add(int.Parse(n));
             }
@@ -37,29 +37,38 @@ namespace TestDb
             return lastNumber;
         }
         [TestMethod]
-        public void TrySql()
+        [ExpectedException(typeof(AbsenceRegistrationService.SqlInjectionException))]
+        public void TrySqlRead()
         {
-            string email = "ferocemarcello@gmail.com" + (this.lastEmailNumber() + 1);
+            string email = "ferocemarcello@edu.eal.dk" + (this.lastEmailNumber() + 1);
             Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
-            try
-            {
-                ldm.Create(u);
-                email=email+"'OR'1'='1";
-                string sqlCommandString = "select email from Project2GroupGUserTable where email='" + email + "'";
-                base.Connect();
-                cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
-                reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    File.AppendAllText(@"C:\users\feroc\MyTest.txt", (string)reader["email"]+Environment.NewLine);
-                }
-                base.Disconnect();
-                Assert.IsTrue(true);
-            }
-            catch (Exception e)
-            {
-                Assert.IsTrue(false);
-            }
+            ldm.Create(u);
+            email=email+"'OR'1'='1";
+            ldm.Read(email);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(AbsenceRegistrationService.SqlInjectionException))]
+        public void TrySqlCreate()
+        {
+            string email = "ferocemarcello@edu.eal.dk';TRUNCATE TABLE Project2GroupGUserTable;--" + (this.lastEmailNumber() + 1);
+            Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
+            ldm.Create(u);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(AbsenceRegistrationService.SqlInjectionException))]
+        public void TrySqlUpdate()
+        {
+            string email = "ferocemarcello@edu.eal.dk';TRUNCATE TABLE Project2GroupGUserTable;--" + (this.lastEmailNumber() + 1);
+            Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
+            ldm.Update(u);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(AbsenceRegistrationService.SqlInjectionException))]
+        public void TrySqlDelete()
+        {
+            string email = "ferocemarcello@edu.eal.dk';TRUNCATE TABLE Project2GroupGUserTable;--" + (this.lastEmailNumber() + 1);
+            Login_Component.User u = new Login_Component.User(email, "marcello", "feroce", "123456", "student");
+            ldm.Delete(email);
         }
     }
 }

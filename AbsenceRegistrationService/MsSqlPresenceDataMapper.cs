@@ -17,7 +17,7 @@ namespace AbsenceRegistrationService
 
         public LinkedList<UserPresence> ReadUserHistory(string key)
         {
-            base.rightInput(key);
+            if (key != null) base.rightInput(key);
             LinkedList<UserPresence> usp = new LinkedList<UserPresence>();
             foreach(UserPresence up in this.ReadAllUsersHistory())
             {
@@ -33,7 +33,6 @@ namespace AbsenceRegistrationService
         {
             LinkedList<UserPresence> userPresences = new LinkedList<UserPresence>();
             string sqlCommandString = "select dateaut,timeaut,mac,ip,email from Project2GroupGAutenticationTable,Project2GroupGAutenticationUserTable where Project2GroupGAutenticationTable.timeindex=Project2GroupGAutenticationUserTable.timeindex";
-            base.rightInput(sqlCommandString);
             base.Connect();
             cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
             reader = cmd.ExecuteReader();
@@ -57,10 +56,11 @@ namespace AbsenceRegistrationService
         }
         public void Create(UserPresence obj)
         {
-            base.rightInput(obj.GetEmail());
-            base.rightInput(obj.GetDate().ToString("yyyy-MM-dd HH:mm:ss.fff"));
-            base.rightInput(obj.GetIp());
-            base.rightInput(obj.GetMac());
+
+            if (obj.GetEmail() != null)  base.rightInput(obj.GetEmail());
+            if (obj.GetDate() != null) base.rightInput(obj.GetDate().ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            if (obj.GetIp() != null) base.rightInput(obj.GetIp());
+            if (obj.GetMac() != null) base.rightInput(obj.GetMac());
             lock (thisLock)
             {
                 this.SetParameters(obj);
@@ -85,7 +85,7 @@ namespace AbsenceRegistrationService
 
         public UserPresence Read(string key)//last autentication
         {
-            base.rightInput(key);
+            if (key != null) base.rightInput(key);
             string sqlCommandString;
             this.SetParameters(new UserPresence(default(DateTime),key,null,null));
             int index = base.GetLastTimeIndexFromEmail(key);
@@ -112,10 +112,10 @@ namespace AbsenceRegistrationService
         }
         public void Update(UserPresence obj)//update last autentication time for that user
         {
-            base.rightInput(obj.GetEmail());
-            base.rightInput(obj.GetDate().ToString("yyyy-MM-dd HH:mm:ss.fff"));
-            base.rightInput(obj.GetIp());
-            base.rightInput(obj.GetMac());
+            if (obj.GetEmail() != null) base.rightInput(obj.GetEmail());
+            if (obj.GetDate() != null) base.rightInput(obj.GetDate().ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            if (obj.GetIp() != null) base.rightInput(obj.GetIp());
+            if (obj.GetMac() != null) base.rightInput(obj.GetMac());
             lock (thisLock)
             {
                 this.SetParameters(obj);
@@ -128,7 +128,7 @@ namespace AbsenceRegistrationService
 
         public void Delete(string key)
         {
-            base.rightInput(key);
+            if (key != null) base.rightInput(key);
             lock (thisLock)
             {
                 int index = base.GetLastTimeIndexFromEmail(key);
