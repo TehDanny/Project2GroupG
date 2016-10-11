@@ -8,7 +8,6 @@ namespace AbsenceRegistrationService
 {
     public class MsSqlOperations:MsSqlConnect
     {
-        protected  string sqlCommandString = "";
         protected SqlCommand cmd;
         protected SqlDataReader reader;
 
@@ -46,7 +45,7 @@ namespace AbsenceRegistrationService
             base.Disconnect();
             return result;
         }
-        protected LinkedList<T> ReadSomeRowesTypeFromCommandStringeOneField<T>(string commandString, string fieldName)
+        /*protected LinkedList<T> ReadSomeRowesTypeFromCommandStringeOneField<T>(string commandString, string fieldName)
         {
             LinkedList<T> results = new LinkedList<T>();
             base.Connect();
@@ -58,10 +57,10 @@ namespace AbsenceRegistrationService
             }
             base.Disconnect();
             return results;
-        }
+        }*/
         protected LinkedList<int> GetTimeIndexesFromEmail(string key)
         {
-            sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable where email='" + key + "'";
+            string sqlCommandString = "select timeindex from Project2GroupGAutenticationUserTable where email='" + key + "'";
             LinkedList<int> indexes = new LinkedList<int>();
             base.Connect();
             cmd = new SqlCommand(sqlCommandString, base.GetSqlConnection());
@@ -73,16 +72,22 @@ namespace AbsenceRegistrationService
             base.Disconnect();
             return indexes;
         }
-
+        protected void rightInput(string s)
+        {
+            if (s.Contains("\"")||s.Contains("!") || s.Contains("=") || s.Contains("%") || s.Contains("&") || s.Contains("?") || s.Contains(";") || s.Contains(",")|| s.Contains("*") || s.Contains("--"))
+            {
+                throw new SqlInjectionException();
+            }
+        }
         
         protected int LastIndexAutenticationTable()
         {
-            sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
+            string sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationTable ORDER BY timeindex desc";
             return this.ReadOneRowOneTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
         protected int GetLastTimeIndexFromEmail(string email)
         {
-            sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable WHERE email='"+email+"' ORDER BY timeindex desc";
+            string sqlCommandString = "select TOP 1 timeindex from Project2GroupGAutenticationUserTable WHERE email='"+email+"' ORDER BY timeindex desc";
             return this.ReadOneRowOneTypeFromCommandStringOneField<int>(sqlCommandString, "timeindex");
         }
         protected void DoVoidCommand(string commandString)
