@@ -10,11 +10,6 @@ namespace AbsenceRegistrationClient {
         /// Clears the whole console after a given time or keypress from user.
         /// </summary>
         /// <param name="waitTime"> In milliseconds. Pass 0 to manual clear. </param>
-        public void ClearScreen(int waitTime) {
-            if (waitTime == 0) Console.Read();
-            else System.Threading.Thread.Sleep(waitTime);
-            Console.Clear();
-        }
         public void PrintStatus(List<DateTime> regList) {
             Console.WriteLine("Presence status");
             foreach (DateTime reg in regList) {
@@ -42,23 +37,65 @@ namespace AbsenceRegistrationClient {
             credentials += Console.ReadLine();
             Console.Write("Password: ");
             credentials += ";" + Console.ReadLine();
-            //Should we check stuff?
-            //Should we care about encrypting the password?
             return credentials;
         }
+        public string Register() {
+            string userInfo = string.Empty;
+            Console.WriteLine("Register");
+            Console.Write("Email: ");
+            userInfo += Console.ReadLine();
+            Console.Write("First name: ");
+            userInfo += ";" + Console.ReadLine();
+            Console.Write("Surname: ");
+            userInfo += ";" + Console.ReadLine();
+            Console.Write("Email: ");
+            userInfo += ";" + Console.ReadLine();
+            Console.Write("Password: ");
+            userInfo += ";" + Console.ReadLine();
+            Console.Write("Confirm password: ");
+            userInfo += ";" + Console.ReadLine();
+            return userInfo;
+        }
+        public void PrintHistoryDay(string dayName, List<string> emails) {
+            Console.WriteLine(dayName + ":");
+            foreach(string email in emails) {
+                Console.WriteLine("- " + email); 
+            }
+            Console.WriteLine();
+        }
+        public void PrintHistoryTopListLine(string email, int count) {
+            Console.WriteLine(email + " - " + count);
+        }
         public enum Message {
+            Start,
+            Disclaimer,
             NoPrivilige,
+            WrongInput,
             SuccessfulCheckIn,
             ByeBye
         }
         public void PrintMessage(Message msg) {
             switch (msg) {
+                case View.Message.Start:
+                    Console.WriteLine("Would you like to register? (y/n)");
+                    Console.WriteLine("You'll be forwarded to login if no.");
+                    break;
+                case Message.Disclaimer:
+                    Console.WriteLine("DISCLAIMER: This program checks and sends your MAC/IP address to the server.");
+                    Console.WriteLine("Only with the purpose of checking your location,");
+                    Console.WriteLine("therefore approving the legitimacy of your actions.");
+                    break;
                 case Message.NoPrivilige: Console.WriteLine("You have no privilige to pick a teacher's feature.!"); break;
                 case Message.ByeBye: Console.WriteLine("Quitting the program..."); break;
                 case Message.SuccessfulCheckIn: Console.WriteLine("Check-in was successful!"); break;
+                case Message.WrongInput: Console.WriteLine("Wrong input. Try again!"); break;
             }
+            Console.ReadKey();
+            Console.Clear();
         }
         public enum Command {
+            Login,
+            Register,
             CheckIn,
             History,
             Current,
@@ -72,12 +109,18 @@ namespace AbsenceRegistrationClient {
                     case "1": return Command.CheckIn;
                     case "2": return Command.History;
                     case "3": return Command.Current;
-                    default: Console.WriteLine("Wrong input. Try again."); break;
+                    case "y": return Command.Register;
+                    case "n": return Command.Login;
+                    default: PrintMessage(Message.WrongInput); break;
                 }
             }
         }
         public void PrintErrorMessage(string errorMessage) {
             Console.WriteLine(errorMessage);
+        }
+        public void ClearScreen() {
+            Console.ReadKey();
+            Console.Clear();
         }
     }
 }
