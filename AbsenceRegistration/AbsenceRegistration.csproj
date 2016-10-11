@@ -45,8 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="View.cs" />
-    <Compile Include="WebController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\ARservice\Reference.cs">
       <AutoGen>True</AutoGen>
