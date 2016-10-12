@@ -15,6 +15,16 @@ namespace AbsenceRegistrationClient {
         //Properties
         private bool isTeacher;
         private bool tryAgain = true;
+
+        // UGLY CODE THAT I JUST PUT HERE BECAUSE WE UPDATED THE SERVICE SIGNATURE
+        // FEEL FREE TO CHANGE ANYTIME
+        private string rightIP = "185.19.132.84";
+        private string wrongIP = "185.23.231.11";
+
+        private string mac1 = "00-1B-63-84-45-E6";
+        private string mac2 = "00-10-5A-44-12-B5";
+
+
         private static void autoCheckInCaller() {
             WebController nonStatic = new WebController();
             nonStatic.autoCheckInMethod();
@@ -169,7 +179,7 @@ namespace AbsenceRegistrationClient {
         }
         private void checkIn() {
             try {
-                client.CheckIn();
+                client.CheckIn(new Random().Next(2) == 0 ?rightIP:wrongIP, new Random().Next(2) == 0 ? mac2 : mac2);
             } catch (Exception e) {
                 view.PrintErrorMessage(e.Message);
                 return;

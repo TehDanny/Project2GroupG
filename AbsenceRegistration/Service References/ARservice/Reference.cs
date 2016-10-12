@@ -123,10 +123,10 @@ namespace AbsenceRegistration.ARservice {
         System.Threading.Tasks.Task<bool> LoginUserAsync(string email, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAbsenceRegistration/CheckIn", ReplyAction="http://tempuri.org/IAbsenceRegistration/CheckInResponse")]
-        void CheckIn();
+        void CheckIn(string ip, string mac);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAbsenceRegistration/CheckIn", ReplyAction="http://tempuri.org/IAbsenceRegistration/CheckInResponse")]
-        System.Threading.Tasks.Task CheckInAsync();
+        System.Threading.Tasks.Task CheckInAsync(string ip, string mac);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAbsenceRegistration/GetAllUsersHistory", ReplyAction="http://tempuri.org/IAbsenceRegistration/GetAllUsersHistoryResponse")]
         AbsenceRegistration.ARservice.UserPresence[] GetAllUsersHistory();
@@ -184,12 +184,12 @@ namespace AbsenceRegistration.ARservice {
             return base.Channel.LoginUserAsync(email, password);
         }
         
-        public void CheckIn() {
-            base.Channel.CheckIn();
+        public void CheckIn(string ip, string mac) {
+            base.Channel.CheckIn(ip, mac);
         }
         
-        public System.Threading.Tasks.Task CheckInAsync() {
-            return base.Channel.CheckInAsync();
+        public System.Threading.Tasks.Task CheckInAsync(string ip, string mac) {
+            return base.Channel.CheckInAsync(ip, mac);
         }
         
         public AbsenceRegistration.ARservice.UserPresence[] GetAllUsersHistory() {

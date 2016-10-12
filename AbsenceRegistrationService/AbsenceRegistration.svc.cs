@@ -145,8 +145,9 @@ namespace AbsenceRegistrationService
             
             //Check if the last presence matches with that one
             UserPresence tmp = pdm.Read(email);
-            if (tmp.GetDate().Hour == DateTime.Now.Hour)
-                throw new FaultException("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
+            if (tmp!= null)
+                if (tmp.GetDate().Hour == DateTime.Now.Hour)
+                    throw new FaultException("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
 
             //Save to DB            
             UserPresence up = new UserPresence(DateTime.Now, email, mac, ip);
