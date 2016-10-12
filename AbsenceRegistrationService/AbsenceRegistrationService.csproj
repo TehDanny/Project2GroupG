@@ -124,7 +124,6 @@
     </Compile>
     <Compile Include="IAbsenceRegistration.cs" />
     <Compile Include="IDataMapper.cs" />
-    <Compile Include="ILoginDataMapper.cs" />
     <Compile Include="IPresenceDataMapper.cs" />
     <Compile Include="MsSqlConnect.cs" />
     <Compile Include="MsSqlLoginDataMapper.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="MsSqlPresenceDataMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlInjectionException.cs" />
-    <Compile Include="User.cs" />
     <Compile Include="UserPresence.cs" />
   </ItemGroup>
   <ItemGroup>
