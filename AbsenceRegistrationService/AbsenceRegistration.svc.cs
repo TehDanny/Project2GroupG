@@ -93,7 +93,15 @@ namespace AbsenceRegistrationService
         /// <returns>True if teacher, false if student</returns>
         public bool CreateUser(string email, string fisrtname, string surname, string password, string confirmPassword)
         {
-            l.CreateUser(email, fisrtname, surname, password, confirmPassword);
+            try
+            {
+                l.CreateUser(email, fisrtname, surname, password, confirmPassword);
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.GetType().ToString());
+            }
+
             return LoginUser(email, password);
         }
 
@@ -103,7 +111,16 @@ namespace AbsenceRegistrationService
         /// <returns>True if teacher, false if student</returns>
         public bool LoginUser(string email, string password)
         {
-            l.LoginUser(email, password);
+
+            try
+            {
+                l.LoginUser(email, password);
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.GetType().ToString());
+            }
+
             this.email = email;
             //Keeps the session for 120 minutes, so the user doesn't have to log in every time
             HttpContext.Current.Session.Timeout = 120;
@@ -126,7 +143,7 @@ namespace AbsenceRegistrationService
             //We take the IP address
             string ip = GetClientIP();
 
-            //Check IP            
+            //Check IP throws an exception if the IP is not valid           
             CheckIP(ip);
             
             //Check if the last presence matches with that one
