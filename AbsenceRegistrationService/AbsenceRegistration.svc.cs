@@ -175,13 +175,17 @@ namespace AbsenceRegistrationService
             throw new NotImplementedException();
         }
 
+
+        private string[] ipList = { "185.19.133.3", "185.19.132.84" };
         //Not the best checkIP ever, gonna improve when we make more research on subnet masks
         private void CheckIP(string ip)
         {
-            if (!ip.StartsWith("10"))
-                throw new FaultException("IP outside eal. IP="+ip);
-
-            //Subnet mask of EAL: 255.255.240.0
+            foreach (string s in ipList)
+            {
+                if (s.Equals(ip))
+                    return;
+            }
+            throw new FaultException("IP outside eal. IP="+ip);
         }
         
         //Must move this into another class, there's the risk of this class getting too huge
