@@ -16,7 +16,7 @@ namespace AbsenceRegistrationService
         bool LoginUser(string email, string password);
 
         [OperationContract]
-        void CheckIn();
+        void CheckIn(string ip, string mac);
 
         [OperationContract]
         LinkedList<UserPresence> GetAllUsersHistory();

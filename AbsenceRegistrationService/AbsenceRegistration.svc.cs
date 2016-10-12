@@ -138,11 +138,8 @@ namespace AbsenceRegistrationService
         
         }
 
-        public void CheckIn()
+        public void CheckIn(string ip, string mac)
         {
-            //We take the IP address
-            string ip = GetClientIP();
-
             //Check IP throws an exception if the IP is not valid           
             CheckIP(ip);
             
@@ -152,9 +149,7 @@ namespace AbsenceRegistrationService
                 throw new FaultException("Already checked-in at this hour (" + DateTime.Now.Hour + ")");
 
             //Save to DB            
-            string mac = GetClientMac();
             UserPresence up = new UserPresence(DateTime.Now, email, mac, ip);
-            
             pdm.Create(up);
             
         }
@@ -187,12 +182,6 @@ namespace AbsenceRegistrationService
                 return false;
         }
 
-        private string GetClientMac()
-        {
-            throw new NotImplementedException();
-        }
-
-
         private string[] ipList = { "185.19.133.3", "185.19.132.84" };
         //Not the best checkIP ever, gonna improve when we make more research on subnet masks
         private void CheckIP(string ip)
@@ -204,12 +193,17 @@ namespace AbsenceRegistrationService
             }
             throw new FaultException("IP outside eal. IP="+ip);
         }
-        
-        //Must move this into another class, there's the risk of this class getting too huge
-        string GetClientIP()
-        {
-            return HttpContext.Current.Request.UserHostAddress;
-        }
+
+        ////Must move this into another class, there's the risk of this class getting too huge
+        //string GetClientIP()
+        //{
+        //    return HttpContext.Current.Request.UserHostAddress;
+        //}
+
+        //private string GetClientMac()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
     }
 }
