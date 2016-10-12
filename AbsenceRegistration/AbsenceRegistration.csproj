@@ -51,7 +51,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="UserPresence.cs" />
     <Compile Include="View.cs" />
     <Compile Include="WebController.cs" />
   </ItemGroup>
