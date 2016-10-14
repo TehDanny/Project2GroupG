@@ -147,7 +147,7 @@ namespace AbsenceRegistrationClient {
             List<string> emails = new List<string>();
             List<Tuple<string, int>> topList = new List<Tuple<string, int>>();
             Tuple<string, int> refTL = new Tuple<string, int>("",0);
-            for (var date = start.Date; date <= end.Date; date.AddDays(1)) {
+            for (var date = start.Date; date <= end.Date; date=date.AddDays(1)) {
                 dayName = date.DayOfWeek.ToString();
                 emails = new List<string>();
                 foreach(UserPresence historyItem in history) {
