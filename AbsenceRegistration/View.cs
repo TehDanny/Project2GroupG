@@ -30,7 +30,7 @@ namespace AbsenceRegistrationClient {
         /// Gets user to login
         /// </summary>
         /// <returns> A string containing both username and password with a ';' separated. </returns>
-        public string Login() {
+        public string getLoginInfo() {
             string credentials = string.Empty;
             Console.WriteLine("Login");
             Console.Write("Username: ");
@@ -39,7 +39,7 @@ namespace AbsenceRegistrationClient {
             credentials += ";" + Console.ReadLine();
             return credentials;
         }
-        public string Register() {
+        public string getRegisterInfo() {
             string userInfo = string.Empty;
             Console.WriteLine("Register");
             Console.Write("Email: ");
@@ -71,6 +71,9 @@ namespace AbsenceRegistrationClient {
             WrongInput,
             TryAutoCheckIn,
             SuccessfulCheckIn,
+            GetEmail,
+            Here,
+            NotHere,
             ByeBye
         }
         public void PrintMessage(Message msg) {
@@ -83,8 +86,8 @@ namespace AbsenceRegistrationClient {
                     Console.WriteLine("DISCLAIMER: This program checks and sends your MAC/IP address to the server.");
                     Console.WriteLine("Only with the purpose of checking your location,");
                     Console.WriteLine("therefore approving the legitimacy of your actions.");
-                    System.Threading.Thread.Sleep(2000);
                     Console.WriteLine();
+                    System.Threading.Thread.Sleep(2000);
                     break;
                 case Message.NoPrivilige:
                     Console.WriteLine("You have no privilige to pick a teacher's feature.!");
@@ -97,6 +100,15 @@ namespace AbsenceRegistrationClient {
                 case Message.SuccessfulCheckIn:
                     Console.WriteLine("Check-in was successful!");
                     ClearScreen();
+                    break;
+                case Message.GetEmail:
+                    Console.Write("Type the email of the person you want to check presence of: ");
+                    break;
+                case Message.Here:
+                    Console.WriteLine("The person is here.");
+                    break;
+                case Message.NotHere:
+                    Console.WriteLine("The person is not here");
                     break;
                 case Message.WrongInput:
                     Console.WriteLine("Wrong input. Try again!");
@@ -130,8 +142,11 @@ namespace AbsenceRegistrationClient {
                 }
             }
         }
-        public void PrintErrorMessage(string errorMessage) {
-            Console.WriteLine(errorMessage);
+        public string GetInput() {
+            return Console.ReadLine();
+        }
+        public void PrintOutput(string msg) {
+            Console.WriteLine(msg);
             ClearScreen();
         }
         public void ClearScreen() {

@@ -8,16 +8,13 @@ using AbsenceRegistration.ARservice;
 
 namespace AbsenceRegistrationClient {
     class WebController {
-        //References
         private View view = new View();
         private AbsenceRegistration.ARservice.AbsenceRegistrationClient client = new AbsenceRegistration.ARservice.AbsenceRegistrationClient();
         private Thread autoCheckIn;
-        //Properties
+
         private bool isTeacher;
         private bool tryAgain = true;
-
-        // UGLY CODE THAT I JUST PUT HERE BECAUSE WE UPDATED THE SERVICE SIGNATURE
-        // FEEL FREE TO CHANGE ANYTIME
+        // Example data
         private string rightIP = "185.19.132.84";
         private string wrongIP = "185.23.231.11";
 
@@ -66,11 +63,11 @@ namespace AbsenceRegistrationClient {
             tryAgain = true;
             while (tryAgain) {
                 try {
-                    string[] userInfo = view.Register().Split(';');
+                    string[] userInfo = view.getRegisterInfo().Split(';');
                     client.CreateUser(userInfo[0], userInfo[1], userInfo[2], userInfo[3], userInfo[4]);
                     tryAgain = false;
                 } catch (Exception e) {
-                    view.PrintErrorMessage(e.Message);
+                    view.PrintOutput(e.Message);
                 }
             }
         }
@@ -78,11 +75,11 @@ namespace AbsenceRegistrationClient {
             tryAgain = true;
             while (tryAgain) {
                 try {
-                    string[] credentials = view.Login().Split(';');
+                    string[] credentials = view.getLoginInfo().Split(';');
                     isTeacher = client.LoginUser(credentials[0], credentials[1]);
                     tryAgain = false;
                 } catch (Exception e) {
-                    view.PrintErrorMessage(e.Message);
+                    view.PrintOutput(e.Message);
                 }
             }
         }
@@ -95,9 +92,9 @@ namespace AbsenceRegistrationClient {
                         break;
                     case View.Command.History:
                         history();
-
                         break;
                     case View.Command.Current:
+                        present();
                         break;
                     case View.Command.Quit:
                         view.PrintMessage(View.Message.ByeBye);
@@ -127,6 +124,12 @@ namespace AbsenceRegistrationClient {
                 }
             }
             return true;
+        }
+        private void present() {
+            view.PrintMessage(View.Message.GetEmail);
+            if (client.GetUserPresent(view.GetInput())) view.PrintMessage(View.Message.Here);
+            else view.PrintMessage(View.Message.NotHere);
+
         }
         private void history() {
             UserPresence[] history = client.GetAllUsersHistory();
@@ -181,7 +184,7 @@ namespace AbsenceRegistrationClient {
             try {
                 client.CheckIn(new Random().Next(2) == 0 ?rightIP:wrongIP, new Random().Next(2) == 0 ? mac2 : mac2);
             } catch (Exception e) {
-                view.PrintErrorMessage(e.Message);
+                view.PrintOutput(e.Message);
                 return;
             }
             view.PrintMessage(View.Message.SuccessfulCheckIn);
