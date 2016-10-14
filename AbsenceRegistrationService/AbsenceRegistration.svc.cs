@@ -45,13 +45,13 @@ namespace AbsenceRegistrationService
         }
 
 
-        MsSqlPresenceDataMapper pdm
+       IPresenceDataMapper pdm
         {
             get
             {
                 if (HttpContext.Current.Session["pdm"] == null)
                     HttpContext.Current.Session["pdm"] = new MsSqlPresenceDataMapper();
-                return (MsSqlPresenceDataMapper)HttpContext.Current.Session["pdm"];
+                return (IPresenceDataMapper)HttpContext.Current.Session["pdm"];
             }
             set
             {
