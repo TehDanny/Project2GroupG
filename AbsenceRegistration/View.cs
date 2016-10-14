@@ -33,7 +33,7 @@ namespace AbsenceRegistrationClient {
         public string getLoginInfo() {
             string credentials = string.Empty;
             Console.WriteLine("Login");
-            Console.Write("Username: ");
+            Console.Write("Email: ");
             credentials += Console.ReadLine();
             Console.Write("Password: ");
             credentials += ";" + Console.ReadLine();
