@@ -64,7 +64,7 @@ namespace AbsenceRegistrationClient {
             while (tryAgain) {
                 try {
                     string[] userInfo = view.getRegisterInfo().Split(';');
-                    client.CreateUser(userInfo[0], userInfo[1], userInfo[2], userInfo[3], userInfo[4]);
+                    isTeacher = client.CreateUser(userInfo[0], userInfo[1], userInfo[2], userInfo[3], userInfo[4]);
                     tryAgain = false;
                 } catch (Exception e) {
                     view.PrintOutput(e.Message);
@@ -182,7 +182,7 @@ namespace AbsenceRegistrationClient {
         }
         private void checkIn() {
             try {
-                client.CheckIn(new Random().Next(2) == 0 ?rightIP:wrongIP, new Random().Next(2) == 0 ? mac2 : mac2);
+                client.CheckIn(new Random().Next(2) == 0 ?rightIP:wrongIP, new Random().Next(2) == 0 ? mac1 : mac2);
             } catch (Exception e) {
                 view.PrintOutput(e.Message);
                 return;
